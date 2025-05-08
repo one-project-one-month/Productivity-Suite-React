@@ -23,7 +23,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install Dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
 
       - name: Copy .env.example to .env
         run: find . -type f -name ".env.example" -exec sh -c 'cp "$1" "${1%.*}"' _ {} \;
