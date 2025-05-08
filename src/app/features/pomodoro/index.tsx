@@ -1,9 +1,5 @@
-
-
 const Pomodoro = () => {
-  return (
-    <div>Pomodoro</div>
-  )
-}
+  return <div>Pomodoro</div>;
+};
 
-export default Pomodoro
+export default Pomodoro;

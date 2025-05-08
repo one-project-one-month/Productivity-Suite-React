@@ -1,9 +1,5 @@
-
-
 const BudgetTracker = () => {
-  return (
-    <div>BudgetTracker</div>
-  )
-}
+  return <div>BudgetTracker</div>;
+};
 
-export default BudgetTracker
+export default BudgetTracker;

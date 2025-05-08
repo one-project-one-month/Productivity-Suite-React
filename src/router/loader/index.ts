@@ -1,5 +1,3 @@
-
-
 // export const authLoader = async () => {
 //   try {
 //     const user = await queryClient.ensureQueryData({

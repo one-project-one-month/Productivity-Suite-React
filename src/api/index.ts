@@ -1,18 +1,17 @@
-import axios from "axios";
+import axios from 'axios';
 
 export const baseURL = import.meta.env.VITE_BACKEND_SERVER;
 
 const api = axios.create({
   baseURL: baseURL,
   headers: {
-    ContentType: "application/json",
-    "Cache-Control": "no-cache",
-    "Access-Control-Allow-Origin": "*",
-    Accept: "application/json",
+    ContentType: 'application/json',
+    'Cache-Control': 'no-cache',
+    'Access-Control-Allow-Origin': '*',
+    Accept: 'application/json',
   },
   withCredentials: true,
 });
-
 
 api.interceptors.response.use(
   (response) => response,
