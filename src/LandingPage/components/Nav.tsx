@@ -15,16 +15,16 @@ const Nav = () => {
           <Link to="/" className="text-black hover:text-blue-500">
             Home
           </Link>
-          <Link to="/pomodoro" className="text-black hover:text-blue-500">
+          <Link to="/app/pomodoro-timer" className="text-black hover:text-blue-500">
             Pomodoro
           </Link>
-          <Link to="/to-do-list" className="text-black hover:text-blue-500">
+          <Link to="/app/todo-list" className="text-black hover:text-blue-500">
             To-Do List
           </Link>
-          <Link to="/notes" className="text-black hover:text-blue-500">
+          <Link to="/app/notes" className="text-black hover:text-blue-500">
             Notes
           </Link>
-          <Link to="/budget" className="text-black hover:text-blue-500">
+          <Link to="/app/budget-tracker" className="text-black hover:text-blue-500">
             Budget
           </Link>
           <Link to="/login">

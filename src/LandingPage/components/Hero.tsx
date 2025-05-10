@@ -13,7 +13,7 @@ const Hero = () => {
             Get Started Free
           </button>
           <button className="bg-white text-indigo-600 px-6 py-3 rounded-md font-medium hover:bg-indigo-100">
-            Login In
+            Log In
           </button>
         </div>
       </div>
