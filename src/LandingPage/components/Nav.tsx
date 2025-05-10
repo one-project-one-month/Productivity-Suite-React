@@ -8,7 +8,7 @@ const Nav = () => {
   return (
     <nav className="bg-gradient-to-r p-4">
       <div className="max-w-screen-xl mx-auto flex justify-between items-center">
-        <div className="text-2xl font-bold text-purple-600">Productivity Suite</div>
+        <Link to="/" className="text-2xl font-bold text-purple-600">Productivity Suite</Link>
 
         {/* Right: Links */}
         <div className="hidden md:flex items-center space-x-6">
@@ -27,9 +27,9 @@ const Nav = () => {
           <Link to="/app/budget-tracker" className="text-black hover:text-blue-500">
             Budget
           </Link>
-          <Link to="/login">
+          <Link to="/signin">
             <button className="border border-gray-300 px-4 py-1 rounded hover:border-purple-600 cursor-pointer">
-              Log in
+              Sign in
             </button>
           </Link>
           <Link to="/signup">

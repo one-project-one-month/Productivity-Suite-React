@@ -8,7 +8,7 @@ const AppLayout = () => {
     <div className="h-screen w-screen container mx-auto p-12">
       {/* you can seperate this nav to another component */}
       <div className="text-2xl font-bold flex justify-between items-center ">
-        <div>Productivity Sute</div>
+        <Link to="/">Productivity Suite</Link>
         <div>
           <Button variant="ghost">Logout</Button>
         </div>
