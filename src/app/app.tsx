@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 
 const AppLayout = () => {
   return (
-    <div className="h-screen w-screen container mx-auto p-12">
+    <div className=" container mx-auto p-12">
       {/* you can seperate this nav to another component */}
       <div className="text-2xl font-bold flex justify-between items-center ">
         <Link to="/">Productivity Suite</Link>
@@ -26,7 +26,7 @@ const AppLayout = () => {
         ))}
       </ul>
 
-      <div className="mt-2 px-4">
+      <div className="mt-2 px-4 overflow-hidden">
         <Outlet />
       </div>
     </div>
