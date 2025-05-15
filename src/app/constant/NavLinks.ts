@@ -20,4 +20,8 @@ export const list: INavLink[] = [
     name: 'Budget tracker',
     href: 'budget-tracker',
   },
+  {
+    name : 'Productivity Summary',
+    href: 'productivity-summary'
+  }
 ];
