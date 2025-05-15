@@ -50,20 +50,6 @@ const Nav = () => {
                     <p className="text-xs text-gray-500 truncate">{user.email}</p>
                   </div>
                   <Link 
-                    to="/profile" 
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    onClick={() => setIsProfileOpen(false)}
-                  >
-                    Profile
-                  </Link>
-                  <Link 
-                    to="/account" 
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    onClick={() => setIsProfileOpen(false)}
-                  >
-                    Manage Account
-                  </Link>
-                  <Link 
                     to="/settings" 
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     onClick={() => setIsProfileOpen(false)}
@@ -138,8 +124,6 @@ const Nav = () => {
                   <p className="text-lg font-medium">{user.username}</p>
                   <p className="text-sm text-gray-500">{user.email}</p>
                 </div>
-                <Link to="/profile" className="text-lg text-black" onClick={() => setIsMenuOpen(false)}>Profile</Link>
-                <Link to="/account" className="text-lg text-black" onClick={() => setIsMenuOpen(false)}>Manage Account</Link>
                 <Link to="/settings" className="text-lg text-black" onClick={() => setIsMenuOpen(false)}>Settings</Link>
                 <button
                   onClick={() => {

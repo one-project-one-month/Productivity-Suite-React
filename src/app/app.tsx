@@ -6,10 +6,12 @@ import { useState } from 'react';
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useAuthDataStore } from '@/store/useAuthStore';
 import Profile from '../assets/profile.png'; 
+import SettingsModal from './SettingsModal';
 
 const AppLayout = () => {
   const [selected,setSelected] = useState<string>("");
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const { logout } = useAuthDataStore();
   return (
     <div className="h-screen w-screen container mx-auto ">
@@ -39,13 +41,15 @@ const AppLayout = () => {
                   <p className="text-sm font-medium text-gray-900">hello</p>
                   <p className="text-xs text-gray-500 truncate">hello</p>
                 </div>
-                <Link 
-                  to="/settings" 
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  onClick={() => setIsProfileOpen(false)}
+                <button
+                  onClick={() => {
+                    setIsSettingsOpen(true); // 🔸 Open settings modal
+                    setIsProfileOpen(false);
+                  }}
+                  className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                 >
                   Settings
-                </Link>
+                </button>
                 <button
                   onClick={() => {
                     logout();
@@ -77,6 +81,9 @@ const AppLayout = () => {
       <div className="my-12 mx-24 border rounded-sm ">
         <Outlet />
       </div>
+
+      {/* 🔸 Settings Modal */}
+      <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
     </div>
   );
 };
