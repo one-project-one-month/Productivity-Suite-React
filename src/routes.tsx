@@ -11,7 +11,7 @@ const Pomodoro = lazy(() => import('./app/features/pomodoro'));
 const TodoList = lazy(() => import('./app/features/todo'));
 const Notes = lazy(() => import('./app/features/notes'));
 const BudgetTracker = lazy(() => import('./app/features/budgetTracker'));
-
+const Summary = lazy(()=>import('./app/features/productivity-summary'));
 const Login = lazy(() => import('./app/SignIn'));
 const Register = lazy(() => import('./app/Signup'));
 
@@ -65,6 +65,10 @@ export const router = createBrowserRouter([
         element: withSuspense(BudgetTracker),
       },
       
+      {
+        path: 'productivity-summary',
+        element: withSuspense(Summary),
+      },
       {
         index: true, // Default route (e.g., redirect to Pomodoro)
         element: <Navigate to="pomodoro-timer" replace />,
