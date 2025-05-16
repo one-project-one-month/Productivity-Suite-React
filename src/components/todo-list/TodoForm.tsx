@@ -15,7 +15,6 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
@@ -51,7 +50,7 @@ const TodoForm = () => {
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="description">Description</Label>
               <Textarea
-                placeholder="Type your message here."
+                placeholder="Describe your task..."
                 className="mt-2"
               />
             </div>
@@ -60,16 +59,13 @@ const TodoForm = () => {
               <div className="mt-2">
                 <Select>
                   <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select a fruit" />
+                    <SelectValue placeholder="Select Priority" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectLabel>Fruits</SelectLabel>
-                      <SelectItem value="apple">Apple</SelectItem>
-                      <SelectItem value="banana">Banana</SelectItem>
-                      <SelectItem value="blueberry">Blueberry</SelectItem>
-                      <SelectItem value="grapes">Grapes</SelectItem>
-                      <SelectItem value="pineapple">Pineapple</SelectItem>
+                      <SelectItem value="low">Low</SelectItem>
+                      <SelectItem value="medium">Medium</SelectItem>
+                      <SelectItem value="high">High</SelectItem>
                     </SelectGroup>
                   </SelectContent>
                 </Select>
