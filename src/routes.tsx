@@ -15,6 +15,8 @@ const BudgetTracker = lazy(() => import('./app/features/budgetTracker'));
 const Login = lazy(() => import('./app/SignIn'));
 const Register = lazy(() => import('./app/Signup'));
 
+const Summary = lazy(() => import('./app/Summary'))
+
 // Wrapper component for lazy loading with suspense
 const withSuspense = (Component: React.ComponentType) => (
   <Suspense fallback={<div>Loading...</div>}>
@@ -39,6 +41,7 @@ export const router = createBrowserRouter([
         path: 'signup',
         element: withSuspense(Register),
       },
+      
     ],
   },
   {
@@ -61,10 +64,15 @@ export const router = createBrowserRouter([
         path: 'budget-tracker',
         element: withSuspense(BudgetTracker),
       },
+      
       {
         index: true, // Default route (e.g., redirect to Pomodoro)
         element: <Navigate to="pomodoro-timer" replace />,
       },
     ],
+  },
+  {
+    path : 'summary',
+    element : withSuspense(Summary)
   },
 ]);
