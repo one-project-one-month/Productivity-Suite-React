@@ -11,7 +11,7 @@ const TodoList = () => {
           Todo List
         </h1>
         <div className="grid gap-8 md:grid-cols-[300px_1fr] lg:grid-cols-[350px_1fr]">
-          <TodoForm />
+          <TodoForm  />
           <TodoListContainer />
         </div>
       </div>
