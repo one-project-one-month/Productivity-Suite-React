@@ -11,11 +11,9 @@ const Pomodoro = lazy(() => import('./app/features/pomodoro'));
 const TodoList = lazy(() => import('./app/features/todo'));
 const Notes = lazy(() => import('./app/features/notes'));
 const BudgetTracker = lazy(() => import('./app/features/budgetTracker'));
-const Summary = lazy(()=>import('./app/features/productivity-summary'));
+const Summary = lazy(() => import('./app/features/productivity-summary'));
 const Login = lazy(() => import('./app/SignIn'));
 const Register = lazy(() => import('./app/Signup'));
-
-const Summary = lazy(() => import('./app/Summary'))
 
 // Wrapper component for lazy loading with suspense
 const withSuspense = (Component: React.ComponentType) => (
@@ -41,7 +39,6 @@ export const router = createBrowserRouter([
         path: 'signup',
         element: withSuspense(Register),
       },
-      
     ],
   },
   {
@@ -64,7 +61,7 @@ export const router = createBrowserRouter([
         path: 'budget-tracker',
         element: withSuspense(BudgetTracker),
       },
-      
+
       {
         path: 'productivity-summary',
         element: withSuspense(Summary),
@@ -76,7 +73,7 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path : 'summary',
-    element : withSuspense(Summary)
+    path: 'summary',
+    element: withSuspense(Summary),
   },
 ]);
