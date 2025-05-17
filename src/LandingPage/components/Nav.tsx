@@ -113,10 +113,10 @@ const Nav = () => {
 
           <div className="flex flex-col space-y-6">
             <Link to="/" className="text-lg text-black" onClick={() => setIsMenuOpen(false)}>Home</Link>
-            <Link to="/pomodoro" className="text-lg text-black" onClick={() => setIsMenuOpen(false)}>Pomodoro</Link>
-            <Link to="/to-do-list" className="text-lg text-black" onClick={() => setIsMenuOpen(false)}>To-Do List</Link>
-            <Link to="/notes" className="text-lg text-black" onClick={() => setIsMenuOpen(false)}>Notes</Link>
-            <Link to="/budget" className="text-lg text-black" onClick={() => setIsMenuOpen(false)}>Budget</Link>
+            <Link to="/app/pomodoro-timer" className="text-lg text-black" onClick={() => setIsMenuOpen(false)}>Pomodoro</Link>
+            <Link to="/app/todo-list" className="text-lg text-black" onClick={() => setIsMenuOpen(false)}>To-Do List</Link>
+            <Link to="/app/notes" className="text-lg text-black" onClick={() => setIsMenuOpen(false)}>Notes</Link>
+            <Link to="/app/budget-tracker" className="text-lg text-black" onClick={() => setIsMenuOpen(false)}>Budget</Link>
             
             {user ? (
               <>
@@ -137,9 +137,9 @@ const Nav = () => {
               </>
             ) : (
               <>
-                <Link to="/login">
+                <Link to="/signin">
                   <button className="w-full border border-gray-300 text-black py-2 rounded cursor-pointer">
-                    Log in
+                    Sign in
                   </button>
                 </Link>
                 <Link to="/signup">
