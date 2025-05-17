@@ -14,7 +14,7 @@ const AppLayout = () => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const { logout } = useAuthDataStore();
   return (
-    <div className="h-screen w-screen container mx-auto ">
+    <div className="container mx-auto ">
       {/* you can seperate this nav to another component */}
       <div className="text-2xl font-bold flex justify-between items-center backdrop-blur-lg shadow-md  py-4 px-16">
         <div>Productivity Suite</div>

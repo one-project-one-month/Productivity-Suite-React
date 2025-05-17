@@ -11,14 +11,19 @@ const Nav = () => {
   return (
     <nav className="bg-gradient-to-r p-4">
       <div className="max-w-screen-xl mx-auto flex justify-between items-center">
-        <Link to="/" className="text-2xl font-bold text-purple-600">Productivity Suite</Link>
+        <Link to="/" className="text-2xl font-bold text-purple-600">
+          Productivity Suite
+        </Link>
 
         {/* Right: Links */}
         <div className="hidden md:flex items-center space-x-6">
           <Link to="/" className="text-black hover:text-blue-500">
             Home
           </Link>
-          <Link to="/app/pomodoro-timer" className="text-black hover:text-blue-500">
+          <Link
+            to="/app/pomodoro-timer"
+            className="text-black hover:text-blue-500"
+          >
             Pomodoro
           </Link>
           <Link to="/app/todo-list" className="text-black hover:text-blue-500">
@@ -27,7 +32,10 @@ const Nav = () => {
           <Link to="/app/notes" className="text-black hover:text-blue-500">
             Notes
           </Link>
-          <Link to="/app/budget-tracker" className="text-black hover:text-blue-500">
+          <Link
+            to="/app/budget-tracker"
+            className="text-black hover:text-blue-500"
+          >
             Budget
           </Link>
           
@@ -86,16 +94,16 @@ const Nav = () => {
 
         {/* Mobile Menu Button */}
         <div className="md:hidden">
-            <button onClick={() => setIsMenuOpen(true)}>
-              <Menu className="text-black" />
-            </button>
+          <button onClick={() => setIsMenuOpen(true)}>
+            <Menu className="text-black" />
+          </button>
         </div>
       </div>
 
       {/* Mobile Menu */}
       <div
         className={`fixed inset-0 z-50 bg-opacity-40 transition-opacity ${
-          isMenuOpen ? "opacity-100 visible" : "opacity-0 invisible"
+          isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
         }`}
         onClick={() => setIsMenuOpen(false)}
       >
