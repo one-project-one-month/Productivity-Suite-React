@@ -33,8 +33,8 @@ const AppLayout = () => {
           </li>
         ))}
       </ul>
-
-      <div className="my-12 mx-24 border rounded-sm ">
+        
+      <div className="w-full">
         <Outlet />
       </div>
     </div>
