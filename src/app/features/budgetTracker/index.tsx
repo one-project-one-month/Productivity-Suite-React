@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import TotalBalance from './components/TotalBalance';
 import SetMonthlyBudget from './components/MonthlyBudget';
-import { ExpensePieChart } from './components/ExpenseChart';
+// import { ExpensePieChart } from './components/ExpenseChart';
+import { Transactions } from './components/Transactions';
 
 const BudgetTracker = () => {
   const [totalBudget, setTotalBudget] = useState(1000);
@@ -24,11 +25,12 @@ const BudgetTracker = () => {
           />
         </div>
 
-        <div className="flex flex-col md:flex-row">
-          <div className="w-full md:w-2/3 p-4"></div>
-          <div className="w-full md:w-1/3 p-4">
-            <ExpensePieChart />
-          </div>
+        <div>
+          {/* <div className="w-full md:w-2/3 p-4"></div>
+          <div className="w-full md:w-1/3 p-4"> */}
+            {/* <ExpensePieChart /> */}
+            <Transactions />
+          {/* </div> */}
         </div>
       </div>
     </>
