@@ -1,5 +1,6 @@
 import { createBrowserRouter, Navigate } from 'react-router';
 import { lazy, Suspense } from 'react';
+import ProtectedRoute from '@/components/ProtectedRoute';
 
 // only example for main  , remove it later
 const Main = lazy(() => import('./LandingPage'));
@@ -11,11 +12,9 @@ const Pomodoro = lazy(() => import('./app/features/pomodoro'));
 const TodoList = lazy(() => import('./app/features/todo'));
 const Notes = lazy(() => import('./app/features/notes'));
 const BudgetTracker = lazy(() => import('./app/features/budgetTracker'));
-
+const Summary = lazy(() => import('./app/features/productivity-summary'));
 const Login = lazy(() => import('./app/SignIn'));
 const Register = lazy(() => import('./app/Signup'));
-
-const Summary = lazy(() => import('./app/Summary'))
 
 // Wrapper component for lazy loading with suspense
 const withSuspense = (Component: React.ComponentType) => (
@@ -27,6 +26,7 @@ const withSuspense = (Component: React.ComponentType) => (
 export const router = createBrowserRouter([
   {
     element: withSuspense(AuthLayout),
+
     children: [
       {
         path: '/',
@@ -41,12 +41,11 @@ export const router = createBrowserRouter([
         path: 'signup',
         element: withSuspense(Register),
       },
-      
     ],
   },
   {
     path: 'app',
-    element: withSuspense(AppLayout),
+    element: <ProtectedRoute>{withSuspense(AppLayout)}</ProtectedRoute>,
     children: [
       {
         path: 'pomodoro-timer',
@@ -64,7 +63,10 @@ export const router = createBrowserRouter([
         path: 'budget-tracker',
         element: withSuspense(BudgetTracker),
       },
-      
+      {
+        path: 'productivity-summary',
+        element: withSuspense(Summary),
+      },
       {
         index: true, // Default route (e.g., redirect to Pomodoro)
         element: <Navigate to="pomodoro-timer" replace />,
@@ -72,7 +74,7 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path : 'summary',
-    element : withSuspense(Summary)
+    path: 'summary',
+    element: withSuspense(Summary),
   },
 ]);

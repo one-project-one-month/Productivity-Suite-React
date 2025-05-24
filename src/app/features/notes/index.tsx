@@ -1,5 +1,5 @@
-const Notes = () => {
-  return <div>Notes</div>;
-};
+import NoteLayout from '@/app/features/notes/NoteLayout';
 
-export default Notes;
+export default function MarkdownEditor() {
+  return <NoteLayout />;
+}
