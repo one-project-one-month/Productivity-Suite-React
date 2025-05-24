@@ -1,7 +1,12 @@
-import { Dispatch, SetStateAction } from 'react';
 import { Button } from '@radix-ui/themes';
 import * as Select from '@radix-ui/react-select';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import type { Dispatch, SetStateAction } from 'react';
 
 interface Transaction {
   id: string;
@@ -22,10 +27,10 @@ interface AddTransactionModalProps {
 
 const categoryColors: Record<string, string> = {
   Housing: '#4682B4', // SteelBlue
-  Food: '#FF6347',    // Tomato
+  Food: '#FF6347', // Tomato
   Transportation: '#FFD700', // Gold
-  Entertainment: '#FF69B4',  // HotPink
-  Utilities: '#32CD32'       // LimeGreen
+  Entertainment: '#FF69B4', // HotPink
+  Utilities: '#32CD32', // LimeGreen
 };
 
 export function AddTransactionModal({
@@ -51,12 +56,17 @@ export function AddTransactionModal({
               id="description"
               type="text"
               value={newTransaction.description}
-              onChange={(e) => setNewTransaction({ ...newTransaction, description: e.target.value })}
+              onChange={(e) =>
+                setNewTransaction({
+                  ...newTransaction,
+                  description: e.target.value,
+                })
+              }
               className="w-full p-2 border rounded"
               placeholder="Enter description"
             />
           </div>
-          
+
           <div className="space-y-2">
             <label htmlFor="amount" className="block text-sm font-medium">
               Amount (MMK)
@@ -65,54 +75,82 @@ export function AddTransactionModal({
               id="amount"
               type="number"
               value={newTransaction.amount}
-              onChange={(e) => setNewTransaction({ ...newTransaction, amount: e.target.value })}
+              onChange={(e) =>
+                setNewTransaction({ ...newTransaction, amount: e.target.value })
+              }
               className="w-full p-2 border rounded"
               placeholder="Enter amount"
             />
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="transaction_date" className="block text-sm font-medium">
+            <label
+              htmlFor="transaction_date"
+              className="block text-sm font-medium"
+            >
               Transaction Date
             </label>
             <input
               type="date"
               value={newTransaction.transaction_date}
-              onChange={(e) => setNewTransaction({ ...newTransaction, transaction_date: e.target.value })}
+              onChange={(e) =>
+                setNewTransaction({
+                  ...newTransaction,
+                  transaction_date: e.target.value,
+                })
+              }
               className="w-full p-2 border rounded"
             />
           </div>
-          
+
           <div className="space-y-2">
             <label className="block text-sm font-medium">Category</label>
             <Select.Root
               value={newTransaction.category}
-              onValueChange={(value) => setNewTransaction({ ...newTransaction, category: value })}
+              onValueChange={(value) =>
+                setNewTransaction({ ...newTransaction, category: value })
+              }
             >
               <Select.Trigger className="flex items-center justify-between w-full p-2 border rounded-md bg-white">
                 <div className="flex items-center">
-                  <span 
+                  <span
                     className="w-3 h-3 rounded-full mr-2"
-                    style={{ backgroundColor: categoryColors[newTransaction.category] }}
+                    style={{
+                      backgroundColor: categoryColors[newTransaction.category],
+                    }}
                   ></span>
                   <Select.Value />
                 </div>
                 <Select.Icon>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path d="M6 9l6 6 6-6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                  >
+                    <path
+                      d="M6 9l6 6 6-6"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
                   </svg>
                 </Select.Icon>
               </Select.Trigger>
 
-              <Select.Content className="z-50 w-96 bg-white border rounded-md shadow-lg" position='popper'>
+              <Select.Content
+                className="z-50 w-96 bg-white border rounded-md shadow-lg"
+                position="popper"
+              >
                 <Select.Viewport>
                   {categories.map((cat) => (
-                    <Select.Item 
-                      key={cat} 
+                    <Select.Item
+                      key={cat}
                       value={cat}
                       className="flex items-center p-2 cursor-pointer hover:bg-gray-50"
                     >
-                      <span 
+                      <span
                         className="w-3 h-3 rounded-full mr-2"
                         style={{ backgroundColor: categoryColors[cat] }}
                       ></span>
