@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -22,15 +22,22 @@ import {
 import { PasswordInput } from '@/components/password-input';
 import { toast } from 'sonner';
 import RequiredStar from '@/components/required-star';
+import { useMutation } from '@tanstack/react-query';
+import { signIn } from '@/api/auth';
+import { assignLoginToken } from '@/lib/auth';
+import { useAuthDataStore } from '@/store/useAuthStore';
 
 const formSchema = z.object({
   email: z.string().email().trim().nonempty('Email required'),
   password: z.string().trim().nonempty('Password required'),
 });
 
-type SignInType = z.infer<typeof formSchema>;
+export type SignInType = z.infer<typeof formSchema>;
 
 const SignIn = () => {
+  const navigate = useNavigate();
+  const setUser = useAuthDataStore((state) => state.setUser);
+
   const form = useForm<SignInType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -39,10 +46,32 @@ const SignIn = () => {
     },
   });
 
+  const { mutateAsync } = useMutation({
+    mutationFn: async (data: SignInType) =>
+      await signIn(data).then((response) => {
+        if (response.data.code === 200) {
+          assignLoginToken(
+            response.data.data.accessToken,
+            response.data.data.accessToken
+          );
+          setUser(response.data.data.currentUser);
+          toast.success('Success Login!');
+          navigate('/app/pomodoro-timer');
+          form.reset();
+          return response.data;
+        }
+      }).catch((e)=> {
+        if (e.response?.data?.code === 401) {
+          toast.error(e.response.data.message ?? "Invalid credentials, please try again.");
+        } else {
+          toast.error('Login failed, please try again.');
+        }
+        throw e;
+      }),
+  });
+
   const onSubmit = (values: SignInType) => {
-    console.log(values, 'Form Values');
-    toast.success('Success Login!');
-    form.reset();
+    mutateAsync(values);
   };
 
   return (

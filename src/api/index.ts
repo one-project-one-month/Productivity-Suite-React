@@ -1,6 +1,8 @@
+import { COOKIE_CONSTANTS } from '@/app/constant';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
-export const baseURL = import.meta.env.VITE_BACKEND_SERVER;
+export const baseURL = import.meta.env.VITE_BACKEND_SERVER + '/api';
 
 const api = axios.create({
   baseURL: baseURL,
@@ -12,6 +14,24 @@ const api = axios.create({
   },
   withCredentials: true,
 });
+
+api.interceptors.request.use(
+  (request) => {
+    // Get access token and add to Authorization header
+    const accessToken = Cookies.get(COOKIE_CONSTANTS.ACCESS_TOKEN);
+
+    if (accessToken) {
+      request.headers.Authorization = `Bearer ${accessToken}`;
+    }
+
+    request.headers['X-Request-Start-Time'] = Math.floor(Date.now() / 1000);
+
+    return request;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 api.interceptors.response.use(
   (response) => response,
@@ -26,7 +46,7 @@ api.interceptors.response.use(
 );
 
 export const authApi = axios.create({
-  baseURL: import.meta.env.VITE_BACKEND_SERVER,
+  baseURL: import.meta.env.VITE_BACKEND_SERVER + '/api',
   headers: {
     'Content-Type': 'application/json',
   },

@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -31,6 +31,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { useMutation } from '@tanstack/react-query';
+import { signUp } from '@/api/auth';
+import { assignLoginToken } from '@/lib/auth';
+import { LoaderPinwheel } from 'lucide-react';
+import { useAuthDataStore } from '@/store/useAuthStore';
 
 const formSchema = z
   .object({
@@ -56,10 +61,14 @@ const formSchema = z
     path: ['confirmPassword'],
   });
 
-type SignUpType = z.infer<typeof formSchema>;
+export type SignUpType = z.infer<typeof formSchema>;
 
 const SignUp = () => {
+  const navigate = useNavigate();
+
   const genderList = objectToArray(GENDER);
+
+  const setUser = useAuthDataStore((state) => state.setUser);
 
   const form = useForm<SignUpType>({
     resolver: zodResolver(formSchema),
@@ -73,10 +82,35 @@ const SignUp = () => {
     },
   });
 
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: async (data: SignUpType) =>
+      await signUp(data)
+        .then((response) => {
+          if (response.data.code === 201) {
+            assignLoginToken(
+              response.data.data.accessToken,
+              response.data.data.accessToken
+            );
+            toast.success('Success Sign Up!');
+            form.reset();
+            navigate('/app/pomodoro-timer');
+            setUser(response.data.data.user);
+            return response.data;
+          }
+        })
+        .catch((e) => {
+          if (e.response?.data?.code === 400) {
+            toast.error(
+              e.response.data.message ?? 'Sign Up failed, please try again.'
+            );
+          } else {
+            toast.error('Sign Up failed, please try again.');
+          }
+        }),
+  });
+
   const onSubmit = (values: SignUpType) => {
-    console.log(values, 'Form Values');
-    toast.success('Success Sign Up!');
-    form.reset();
+    mutateAsync(values);
   };
 
   return (
@@ -228,9 +262,16 @@ const SignUp = () => {
                     />
                     <Button
                       type="submit"
+                      disabled={isPending}
                       className="w-full bg-indigo-500 hover:bg-indigo-600"
                     >
-                      Sign up
+                      {isPending ? (
+                        <span className="animate-spin">
+                          <LoaderPinwheel />
+                        </span>
+                      ) : (
+                        'Sign Up'
+                      )}
                     </Button>
                   </div>
                   <div className="mt-4 text-center text-sm">
