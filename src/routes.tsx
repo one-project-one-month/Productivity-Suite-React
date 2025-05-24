@@ -63,7 +63,6 @@ export const router = createBrowserRouter([
         path: 'budget-tracker',
         element: withSuspense(BudgetTracker),
       },
-
       {
         path: 'productivity-summary',
         element: withSuspense(Summary),
