@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
-import { X, Menu, ChevronDown, ChevronUp } from "lucide-react";
+import { X, Menu, ChevronDown, ChevronUp } from 'lucide-react';
 import { useAuthDataStore } from '@/store/useAuthStore';
 
 const Nav = () => {
@@ -38,27 +38,35 @@ const Nav = () => {
           >
             Budget
           </Link>
-          
+
           {user ? (
             <div className="relative">
-              <button 
+              <button
                 onClick={() => setIsProfileOpen(!isProfileOpen)}
                 className="flex items-center space-x-2 focus:outline-none"
               >
                 <div className="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center text-white">
-                  {user.username.charAt(0).toUpperCase()}
+                  {user.name.charAt(0).toUpperCase()}
                 </div>
-                {isProfileOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                {isProfileOpen ? (
+                  <ChevronUp size={16} />
+                ) : (
+                  <ChevronDown size={16} />
+                )}
               </button>
-              
+
               {isProfileOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
                   <div className="px-4 py-2 border-b">
-                    <p className="text-sm font-medium text-gray-900">{user.username}</p>
-                    <p className="text-xs text-gray-500 truncate">{user.email}</p>
+                    <p className="text-sm font-medium text-gray-900">
+                      {user.name}
+                    </p>
+                    <p className="text-xs text-gray-500 truncate">
+                      {user.email}
+                    </p>
                   </div>
-                  <Link 
-                    to="/settings" 
+                  <Link
+                    to="/settings"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     onClick={() => setIsProfileOpen(false)}
                   >
@@ -109,7 +117,7 @@ const Nav = () => {
       >
         <div
           className={`fixed top-0 right-0 h-full w-3/4 bg-white p-6 transition-transform duration-300 ease-in-out ${
-            isMenuOpen ? "translate-x-0" : "translate-x-full"
+            isMenuOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
           onClick={(e) => e.stopPropagation()}
         >
@@ -120,19 +128,55 @@ const Nav = () => {
           </div>
 
           <div className="flex flex-col space-y-6">
-            <Link to="/" className="text-lg text-black" onClick={() => setIsMenuOpen(false)}>Home</Link>
-            <Link to="/app/pomodoro-timer" className="text-lg text-black" onClick={() => setIsMenuOpen(false)}>Pomodoro</Link>
-            <Link to="/app/todo-list" className="text-lg text-black" onClick={() => setIsMenuOpen(false)}>To-Do List</Link>
-            <Link to="/app/notes" className="text-lg text-black" onClick={() => setIsMenuOpen(false)}>Notes</Link>
-            <Link to="/app/budget-tracker" className="text-lg text-black" onClick={() => setIsMenuOpen(false)}>Budget</Link>
-            
+            <Link
+              to="/"
+              className="text-lg text-black"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Home
+            </Link>
+            <Link
+              to="/app/pomodoro-timer"
+              className="text-lg text-black"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Pomodoro
+            </Link>
+            <Link
+              to="/app/todo-list"
+              className="text-lg text-black"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              To-Do List
+            </Link>
+            <Link
+              to="/app/notes"
+              className="text-lg text-black"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Notes
+            </Link>
+            <Link
+              to="/app/budget-tracker"
+              className="text-lg text-black"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Budget
+            </Link>
+
             {user ? (
               <>
                 <div className="border-t pt-4">
-                  <p className="text-lg font-medium">{user.username}</p>
+                  <p className="text-lg font-medium">{user.name}</p>
                   <p className="text-sm text-gray-500">{user.email}</p>
                 </div>
-                <Link to="/settings" className="text-lg text-black" onClick={() => setIsMenuOpen(false)}>Settings</Link>
+                <Link
+                  to="/settings"
+                  className="text-lg text-black"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Settings
+                </Link>
                 <button
                   onClick={() => {
                     logout();

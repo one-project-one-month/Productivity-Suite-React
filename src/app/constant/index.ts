@@ -15,3 +15,8 @@ export const GENDER = Object.freeze({
     label: 'Other',
   },
 });
+
+export const COOKIE_CONSTANTS = Object.freeze({
+  ACCESS_TOKEN: 'productivity_access_token',
+  REFRESH_TOKEN: 'productivity_refresh_token',
+});

@@ -1,5 +1,6 @@
 import { createBrowserRouter, Navigate } from 'react-router';
 import { lazy, Suspense } from 'react';
+import ProtectedRoute from '@/components/ProtectedRoute';
 
 // only example for main  , remove it later
 const Main = lazy(() => import('./LandingPage'));
@@ -25,6 +26,7 @@ const withSuspense = (Component: React.ComponentType) => (
 export const router = createBrowserRouter([
   {
     element: withSuspense(AuthLayout),
+
     children: [
       {
         path: '/',
@@ -43,7 +45,7 @@ export const router = createBrowserRouter([
   },
   {
     path: 'app',
-    element: withSuspense(AppLayout),
+    element: <ProtectedRoute>{withSuspense(AppLayout)}</ProtectedRoute>,
     children: [
       {
         path: 'pomodoro-timer',
