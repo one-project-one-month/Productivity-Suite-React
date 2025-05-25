@@ -11,6 +11,11 @@ const AuthLayout = lazy(() => import('./app/AuthLayout'));
 const Pomodoro = lazy(() => import('./app/features/pomodoro'));
 const TodoList = lazy(() => import('./app/features/todo'));
 const Notes = lazy(() => import('./app/features/notes'));
+const NoteCategories = lazy(
+  () => import('./app/features/notes/CategoryNotesList')
+);
+const NoteUpdate = lazy(() => import('./app/features/notes/NoteUpdate'));
+const NoteCreate = lazy(() => import('./app/features/notes/NoteCreate'));
 const BudgetTracker = lazy(() => import('./app/features/budgetTracker'));
 const Summary = lazy(() => import('./app/features/productivity-summary'));
 const Login = lazy(() => import('./app/SignIn'));
@@ -58,6 +63,18 @@ export const router = createBrowserRouter([
       {
         path: 'notes',
         element: withSuspense(Notes),
+      },
+      {
+        path: 'notes/:categoryId',
+        element: withSuspense(NoteCategories),
+      },
+      {
+        path: 'notes/:categoryId/create',
+        element: withSuspense(NoteCreate),
+      },
+      {
+        path: 'notes/:categoryId/edit/:noteId',
+        element: withSuspense(NoteUpdate),
       },
       {
         path: 'budget-tracker',
