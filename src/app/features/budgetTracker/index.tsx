@@ -10,7 +10,7 @@ const BudgetTracker = () => {
 
   return (
     <>
-      <div className="border border-gray-300 rounded-xl shadow-lg p-6">
+      <div className="bg-white rounded-xl shadow-lg p-6">
         <div className="mb-6">
           <TotalBalance
             totalBudget={totalBudget}
@@ -28,8 +28,8 @@ const BudgetTracker = () => {
         <div>
           {/* <div className="w-full md:w-2/3 p-4"></div>
           <div className="w-full md:w-1/3 p-4"> */}
-            {/* <ExpensePieChart /> */}
-            <Transactions />
+          {/* <ExpensePieChart /> */}
+          <Transactions />
           {/* </div> */}
         </div>
       </div>
