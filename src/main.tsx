@@ -8,7 +8,14 @@ import { RouterProvider } from 'react-router';
 import { router } from './routes.tsx';
 import { Toaster } from '@/components/ui/sonner';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+defaultOptions:{
+    queries: {
+refetchOnMount: false,
+        refetchOnWindowFocus: false,
+    }
+}
+});
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

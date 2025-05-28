@@ -50,12 +50,14 @@ const AppLayout = () => {
 
     return matchedItem
       ? {
+          id: matchedItem.id,
           name: matchedItem.name,
           icon: matchedItem.icon,
           textColor: matchedItem.textColor,
           bgColor: matchedItem.bgColor,
         }
       : {
+          id: 0,
           name: 'Productivity Suite',
           icon: null,
           textColor: 'text-black',
@@ -63,7 +65,7 @@ const AppLayout = () => {
         };
   };
 
-  const { name, icon, textColor, bgColor } = getProductInfo();
+  const { name, icon, textColor, bgColor, id } = getProductInfo();
 
   return (
     <div className={`${bgColor} min-h-screen`}>
@@ -75,11 +77,24 @@ const AppLayout = () => {
             <span className={`text-2xl font-bold ${textColor}`}>{name}</span>
           </div>
           <div className="flex items-center space-x-4">
+            {id !== 0 && (
+              <Button
+                variant="outline"
+                onClick={() =>
+                  navigate('/app/category', {
+                    state: {
+                      from: location.pathname,
+                      categoryTypeId: id,
+                      name: name,
+                    },
+                  })
+                }
+              >
+                Manage Category
+              </Button>
+            )}
             <Button variant="outline">
-              <Link to="/summary">Category Management</Link>
-            </Button>
-            <Button variant="outline">
-              <Link to="/summary">View Summary</Link>
+              <Link to="/app/productivity-summary">View Summary</Link>
             </Button>
             <div className="relative">
               <button

@@ -1,7 +1,9 @@
 import type { ReactNode } from 'react';
 import { Clock, DollarSign, ListChecks, NotebookText } from 'lucide-react';
+import { PRODUCTS } from '.';
 
 export interface INavLink {
+  id: number;
   name: string;
   href: string;
   icon: ReactNode;
@@ -11,6 +13,7 @@ export interface INavLink {
 
 export const list: INavLink[] = [
   {
+    id: PRODUCTS.POMODORO_TIMER,
     name: 'Pomodoro Timer',
     href: 'pomodoro-timer',
     icon: (
@@ -22,6 +25,7 @@ export const list: INavLink[] = [
     bgColor: 'bg-red-400/20',
   },
   {
+    id: PRODUCTS.TODO_LIST,
     name: 'To-Do list',
     href: 'todo-list',
     icon: (
@@ -33,6 +37,7 @@ export const list: INavLink[] = [
     bgColor: 'bg-blue-400/20',
   },
   {
+    id: PRODUCTS.NOTES,
     name: 'Notes',
     href: 'notes',
     icon: (
@@ -44,6 +49,7 @@ export const list: INavLink[] = [
     bgColor: 'bg-purple-400/20',
   },
   {
+    id: PRODUCTS.BUDGET_TRACKER,
     name: 'Budget tracker',
     href: 'budget-tracker',
     icon: (

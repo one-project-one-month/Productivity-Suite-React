@@ -20,6 +20,7 @@ const BudgetTracker = lazy(() => import('./app/features/budgetTracker'));
 const Summary = lazy(() => import('./app/features/productivity-summary'));
 const Login = lazy(() => import('./app/SignIn'));
 const Register = lazy(() => import('./app/Signup'));
+const CategoryManagement = lazy(() => import('./app/features/category'));
 
 // Wrapper component for lazy loading with suspense
 const withSuspense = (Component: React.ComponentType) => (
@@ -61,6 +62,10 @@ export const router = createBrowserRouter([
         element: withSuspense(TodoList),
       },
       {
+        path: 'category',
+        element: withSuspense(CategoryManagement),
+      },
+      {
         path: 'notes',
         element: withSuspense(Notes),
       },
@@ -89,9 +94,5 @@ export const router = createBrowserRouter([
         element: <Navigate to="pomodoro-timer" replace />,
       },
     ],
-  },
-  {
-    path: 'summary',
-    element: withSuspense(Summary),
   },
 ]);
