@@ -1,4 +1,6 @@
 import { COOKIE_CONSTANTS } from '@/app/constant';
+import { removeToken } from '@/lib/auth';
+import { useAuthDataStore } from '@/store/useAuthStore';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
@@ -36,10 +38,11 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
+    const logoutZustand = useAuthDataStore((state) => state.logout);
     if (error.response?.status === 401) {
-      window.location.href = `/login?redirect=${encodeURIComponent(
-        window.location.pathname
-      )}`;
+      removeToken();
+      logoutZustand();
+      window.location.href = '/login';
     }
     return Promise.reject(error);
   }
