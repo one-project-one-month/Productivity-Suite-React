@@ -31,6 +31,7 @@ import {
   CommandItem,
   CommandList,
 } from '@/components/ui/command';
+import Editor from "@/app/features/notes/components/Editor.tsx";
 
 type NoteFormProps = {
   category: Category;
@@ -111,6 +112,10 @@ const NoteForm = ({ category, initialData, handleSubmit }: NoteFormProps) => {
         <MoveLeft />
         <span>Back</span>
       </div>
+      <Editor content={""} onChange={(content)=> {
+
+        console.log(content)
+      }}/>
       {/* <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <FormField
