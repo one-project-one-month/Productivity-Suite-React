@@ -30,7 +30,7 @@ const BudgetTracker = () => {
       {mutation.isError && <p>Error updating budget</p>}
       <div className="bg-white rounded-xl shadow-lg p-6">//</div>
       <div className="border border-gray-300 rounded-xl shadow-lg p-6">
-        <div className="mb-6">
+        <div className="mb-5">
           <TotalBalance
             totalBudget={totalBudget}
             onEdit={() => setDialogOpen(true)}
