@@ -1,23 +1,28 @@
 import { useState } from 'react';
 import TotalBalance from './components/TotalBalance';
 import SetMonthlyBudget from './components/MonthlyBudget';
+import CategoryProgressTracker from './components/CategoryProgressTracker';
 import { Transactions } from './components/Transactions';
 //import { ExpensePieChart } from './components/ExpenseChart';
-import { useMutation } from '@tanstack/react-query';
-import { patchBudget } from './components/setBudgetApi';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import {
+  patchBudget,
+  fetchTotalTransactionAmount,
+} from './components/setBudgetApi';
 
 const BudgetTracker = () => {
   const [totalBudget, setTotalBudget] = useState<number>(0);
-
   const [dialogOpen, setDialogOpen] = useState(false);
 
+  // Mutation to update budget amount
   const mutation = useMutation({
     mutationFn: patchBudget,
     onSuccess: (updated) => {
-      setTotalBudget(10);
       //setTotalBudget(updated.amount);
+      //currently constant amount will change later
+      setTotalBudget(10);
       setDialogOpen(false);
-      console.log(updated);
+      console.log('Budget updated:', updated);
     },
   });
 
@@ -25,14 +30,31 @@ const BudgetTracker = () => {
     mutation.mutate(totalBudget + addedAmount);
   };
 
+  // For fetching transaction data
+  const { data: totalSpent, isError: isTotalError } = useQuery({
+    queryKey: ['totalTransactionAmount'],
+    queryFn: fetchTotalTransactionAmount,
+    refetchInterval: 15000, // poll every 15 seconds
+    refetchIntervalInBackground: true,
+    refetchOnWindowFocus: true,
+  });
+
+  const safeTotalSpent = totalSpent ?? 0;
+
   return (
     <>
-      {mutation.isError && <p>Error updating budget</p>}
-      <div className="bg-white rounded-xl shadow-lg p-6">//</div>
+      {mutation.isError && (
+        <p className="text-red-600">Error updating budget</p>
+      )}
+      {isTotalError && (
+        <p className="text-red-600">Error loading total spent</p>
+      )}
+
       <div className="border border-gray-300 rounded-xl shadow-lg p-6">
         <div className="mb-5">
           <TotalBalance
             totalBudget={totalBudget}
+            safeTotalSpent={safeTotalSpent}
             onEdit={() => setDialogOpen(true)}
           />
 
@@ -43,13 +65,13 @@ const BudgetTracker = () => {
             onSave={handleSave}
           />
         </div>
+        <div className="border border-gray-300 rounded-xl shadow-lg p-6 mb-5 bg-white">
+          <CategoryProgressTracker />
+        </div>
 
         <div>
-          {/* <div className="w-full md:w-2/3 p-4"></div>
-          <div className="w-full md:w-1/3 p-4"> */}
           {/* <ExpensePieChart /> */}
           <Transactions />
-          {/* </div> */}
         </div>
       </div>
     </>
