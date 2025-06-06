@@ -10,8 +10,11 @@ interface TrackerBarProps {
   category: string;
   budget: number;
   spent: number;
+  categoryId: number;
   handleUpdate: (id: number) => void;
   handleDelete: (id: number) => void;
+  totalSpentByCategory: number;
+
 }
 
 const TrackerBar: React.FC<TrackerBarProps> = ({
@@ -19,11 +22,15 @@ const TrackerBar: React.FC<TrackerBarProps> = ({
   category,
   budget,
   spent,
+  //categoryId,
+  totalSpentByCategory,
 
   handleDelete,
 }) => {
-  const remaining = budget - spent;
+  //const remaining = budget -  totalSpentByCategory;
   const progress = budget > 0 ? (spent / budget) * 100 : 0;
+  console.log(category);
+  console.log(id);
 
   return (
     <Card className="mb-4 p-0">
@@ -42,8 +49,12 @@ const TrackerBar: React.FC<TrackerBarProps> = ({
 
         <CardDescription className="text-sm mt-1">
           <div className="flex justify-between">
+            {/* <span>ID: {categoryId}</span> */}
+
             <span>Budget: {budget.toLocaleString()}</span>
-            <span>Used: {(budget - remaining).toLocaleString()} </span>
+            {/* <span>Used: {(budget - remaining).toLocaleString()} </span> */}
+
+            <span>Used: {totalSpentByCategory} </span>
           </div>
 
           <div className="relative w-full bg-gray-200 rounded-full h-2 mt-6">
@@ -66,18 +77,7 @@ const TrackerBar: React.FC<TrackerBarProps> = ({
         </CardDescription>
       </CardHeader>
 
-      {/* <CardContent>
-        <div className="space-y-4">
-      
-
-          <div className="flex justify-between items-center">
-            <p className="text-green-500">
-              {remaining.toLocaleString()} MMK remaining
-            </p>
-            <p className="text-sm text-gray-600">{progress.toFixed(0)}% used</p>
-          </div>
-        </div>
-      </CardContent> */}
+   
     </Card>
   );
 };

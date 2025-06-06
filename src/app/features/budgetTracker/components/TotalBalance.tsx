@@ -10,10 +10,15 @@ import {
 interface Props {
   totalBudget: number;
   safeTotalSpent: number;
-  onEdit: () => void;
+  currencyCode: string;
+  //onEdit: () => void;
 }
 //onEdit
-const TotalBalance: React.FC<Props> = ({ totalBudget, safeTotalSpent }) => {
+const TotalBalance: React.FC<Props> = ({
+  totalBudget,
+  safeTotalSpent,
+  currencyCode,
+}) => {
   //const totalBalance = 0;
   const spent = safeTotalSpent;
   const remaining = totalBudget - spent;
@@ -29,7 +34,7 @@ const TotalBalance: React.FC<Props> = ({ totalBudget, safeTotalSpent }) => {
         </CardHeader>
         <CardContent>
           <p className="text-xl font-bold text-green-500">
-            {totalBudget - safeTotalSpent} MMK
+            {totalBudget - safeTotalSpent} {currencyCode}
           </p>
         </CardContent>
       </Card>
@@ -37,11 +42,11 @@ const TotalBalance: React.FC<Props> = ({ totalBudget, safeTotalSpent }) => {
       <Card className="col-span-1">
         <CardHeader>
           <CardTitle className="text-2xl font-semibold">
-           Total Monthly Budget
+            Total Monthly Budget
           </CardTitle>
           <div className="flex justify-between items-center w-full">
             <CardDescription>
-              Budget: {totalBudget.toLocaleString()} MMK
+              Budget: {totalBudget.toLocaleString()} {currencyCode}
             </CardDescription>
             {/* <button
               onClick={onEdit}
@@ -62,7 +67,7 @@ const TotalBalance: React.FC<Props> = ({ totalBudget, safeTotalSpent }) => {
 
             <div className="flex justify-between items-center">
               <p className="text-lg text-green-500">
-                {remaining.toLocaleString()} MMK remaining
+                {remaining.toLocaleString()} {currencyCode}remaining
               </p>
               <p className="text-sm text-gray-600">
                 {progress.toFixed(0)}% used
