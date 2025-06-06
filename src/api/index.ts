@@ -6,6 +6,7 @@ import Cookies from 'js-cookie';
 
 export const baseURL = import.meta.env.VITE_BACKEND_SERVER + '/api';
 
+
 const api = axios.create({
   baseURL: baseURL,
   headers: {
