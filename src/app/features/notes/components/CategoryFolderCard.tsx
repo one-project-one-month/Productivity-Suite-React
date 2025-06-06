@@ -4,12 +4,13 @@ import { CardContent } from '@/components/ui/card';
 import { Card } from '@radix-ui/themes';
 import { useNavigate } from 'react-router';
 
-const CategoryFolderCard = ({ category }: { category: Category }) => {
+const CategoryFolderCard = ({ category }: { category: NoteCategory }) => {
   const navigate = useNavigate();
 
   const Icon = getCategoryIcon(category.categoryName);
 
-  const handleCategoryClick = (category: Category) => {
+  const handleCategoryClick = (category: NoteCategory) => {
+    console.log(category, 'category in handleCategoryClick');
     navigate(`/app/notes/${category.categoryId}`, {
       state: {
         categoryName: category.categoryName,
@@ -19,9 +20,11 @@ const CategoryFolderCard = ({ category }: { category: Category }) => {
     });
   };
 
+  console.log(category, 'category in CategoryFolderCard');
+
   return (
     <Card
-      key={category.categoryId}
+      key={category.categoryName}
       className="group hover:shadow-lg transition-all duration-200 cursor-pointer bg-slate-100 backdrop-blur-sm border-gray-200 hover:scale-105 rounded-sm"
       // style={{ backgroundColor: category.color + '20' }}
       onClick={() => handleCategoryClick(category)}
@@ -48,6 +51,7 @@ const CategoryFolderCard = ({ category }: { category: Category }) => {
           }}
         >
           {category.numberOfNotes} notes
+          {/* 10 Notes */}
         </Badge>
       </CardContent>
     </Card>

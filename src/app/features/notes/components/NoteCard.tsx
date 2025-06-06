@@ -1,10 +1,11 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { getPreviewText } from '@/lib/stringUtils';
 import { Edit, Pin, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router';
 
 interface NoteCardProps {
-  category?: Category;
+  category?: NoteCategory;
   note: Note;
   onDelete: (noteId: number) => void;
   onTogglePin: (noteId: number) => void;
@@ -13,21 +14,17 @@ interface NoteCardProps {
 const NoteCard = ({ category, note, onDelete, onTogglePin }: NoteCardProps) => {
   const navigate = useNavigate();
 
-  const getPreviewText = (markdown: string) => {
-    return (
-      markdown.replace(/[#*`_~]/g, '').substring(0, 150) +
-      (markdown.length > 150 ? '...' : '')
-    );
-  };
-
   return (
     <Card
-      className="group hover:shadow-lg transition-all duration-200 cursor-pointer bg-white/70 backdrop-blur-sm border-gray-200"
+      className="group hover:shadow-lg transition-all duration-200 py-3 gap-1 cursor-pointer bg-white/70 backdrop-blur-sm border-gray-200"
       style={{ borderLeftColor: note?.color, borderLeftWidth: '4px' }}
     >
-      <CardHeader className="pb-3">
+      <CardHeader>
         <div className="flex items-start justify-between">
-          <CardTitle className="text-lg font-medium line-clamp-2 group-hover:text-purple-600 transition-colors">
+          <CardTitle
+            className="text-lg font-medium line-clamp-2 group-hover:text-purple-600 transition-colors truncate max-w-28"
+            title={note.title}
+          >
             {note.title}
           </CardTitle>
           <div className="flex space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
