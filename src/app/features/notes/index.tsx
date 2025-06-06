@@ -1,130 +1,37 @@
+import { getAllCategoryNotes } from '@/api/notes';
 import CategoryFolderCard from '@/app/features/notes/components/CategoryFolderCard';
 import { Button } from '@/components/ui/button';
+import { useQuery } from '@tanstack/react-query';
 import { Folder, Plus } from 'lucide-react';
 
-const demoCategories: Category[] = [
-  {
-    categoryId: 1,
-    categoryName: 'Work',
-    color: '#FF5733',
-    numberOfNotes: 12,
-  },
-  {
-    categoryId: 2,
-    categoryName: 'Personal',
-    color: '#33B5FF',
-    numberOfNotes: 7,
-  },
-  {
-    categoryId: 2,
-    categoryName: 'Personal',
-    color: '#33B5FF',
-    numberOfNotes: 7,
-  },
-  {
-    categoryId: 2,
-    categoryName: 'Personal',
-    color: '#33B5FF',
-    numberOfNotes: 7,
-  },
-  {
-    categoryId: 2,
-    categoryName: 'Personal',
-    color: '#33B5FF',
-    numberOfNotes: 7,
-  },
-  {
-    categoryId: 2,
-    categoryName: 'Personal',
-    color: '#33B5FF',
-    numberOfNotes: 7,
-  },
-  {
-    categoryId: 2,
-    categoryName: 'Personal',
-    color: '#33B5FF',
-    numberOfNotes: 7,
-  },
-  {
-    categoryId: 3,
-    categoryName: 'Ideas',
-    color: '#8D33FF',
-    numberOfNotes: 5,
-  },
-  {
-    categoryId: 5,
-    categoryName: 'Shopping',
-    color: '#FFC300',
-    numberOfNotes: 9,
-  },
-  {
-    categoryId: 5,
-    categoryName: 'Dev',
-    color: '#FFC300',
-    numberOfNotes: 9,
-  },
-  {
-    categoryId: 5,
-    categoryName: 'Fitness',
-    color: '#FFC300',
-    numberOfNotes: 9,
-  },
-  {
-    categoryId: 5,
-    categoryName: 'Weight',
-    color: '#FFC300',
-    numberOfNotes: 9,
-  },
-  {
-    categoryId: 5,
-    categoryName: 'Food',
-    color: '#FFC300',
-    numberOfNotes: 9,
-  },
-  {
-    categoryId: 5,
-    categoryName: 'Health',
-    color: '#FFC300',
-    numberOfNotes: 9,
-  },
-  {
-    categoryId: 5,
-    categoryName: 'Shopping',
-    color: '#FFC300',
-    numberOfNotes: 9,
-  },
-  {
-    categoryId: 5,
-    categoryName: 'Shopping',
-    color: '#FFC300',
-    numberOfNotes: 9,
-  },
-  {
-    categoryId: 5,
-    categoryName: 'Shopping',
-    color: '#FFC300',
-    numberOfNotes: 9,
-  },
-  {
-    categoryId: 5,
-    categoryName: 'Shopping',
-    color: '#FFC300',
-    numberOfNotes: 9,
-  },
-  {
-    categoryId: 5,
-    categoryName: 'Shopping',
-    color: '#FFC300',
-    numberOfNotes: 9,
-  },
-];
-
 export default function MarkdownEditor() {
+  const { data, isLoading } = useQuery({
+    queryKey: ['note-categories'],
+    queryFn: async (): Promise<NoteCategory[]> =>
+      await getAllCategoryNotes().then((res) => {
+        if (res.data.code === 200) {
+          return res.data.data;
+        }
+        throw new Error('Failed to fetch note categories');
+      }),
+  });
+
+  const skeletons = new Array(6).fill(null);
+
   return (
     <div className="bg-white p-6 rounded-lg shadow-md min-h-[calc(100dvh-220px)]">
-      {demoCategories.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 ">
-          {demoCategories.map((category) => (
+      {isLoading ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+          {skeletons.map((_, index) => (
+            <div
+              key={index}
+              className="animate-pulse bg-gray-100 rounded-lg h-32 w-full"
+            />
+          ))}
+        </div>
+      ) : (data ?? []).length > 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+          {data?.map((category) => (
             <CategoryFolderCard key={category.categoryId} category={category} />
           ))}
         </div>

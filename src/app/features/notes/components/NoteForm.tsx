@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate } from 'react-router';
-import { Check, ChevronsUpDown, MoveLeft } from 'lucide-react';
+import { MoveLeft, Save } from 'lucide-react';
 
 import {
   Form,
@@ -12,29 +12,12 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
-
+import Editor from '@/app/features/notes/components/Editor.tsx';
+import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
-import { cn } from '@/lib/utils';
-
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from '@/components/ui/command';
-import Editor from "@/app/features/notes/components/Editor.tsx";
-
 type NoteFormProps = {
-  category: Category;
+  category: NoteCategory;
   initialData?: NoteForm;
   handleSubmit: (payload: NoteForm) => void;
 };
@@ -47,45 +30,6 @@ const formSchema = z.object({
 });
 
 export type NoteForm = z.infer<typeof formSchema>;
-
-const languages = [
-  {
-    label: 'English',
-    value: 1,
-  },
-  {
-    label: 'French',
-    value: 2,
-  },
-  {
-    label: 'German',
-    value: 3,
-  },
-  {
-    label: 'Spanish',
-    value: 4,
-  },
-  {
-    label: 'Portuguese',
-    value: 5,
-  },
-  {
-    label: 'Russian',
-    value: 6,
-  },
-  {
-    label: 'Japanese',
-    value: 7,
-  },
-  {
-    label: 'Korean',
-    value: 8,
-  },
-  {
-    label: 'Chinese',
-    value: 9,
-  },
-] as const;
 
 const NoteForm = ({ category, initialData, handleSubmit }: NoteFormProps) => {
   const navigate = useNavigate();
@@ -103,83 +47,61 @@ const NoteForm = ({ category, initialData, handleSubmit }: NoteFormProps) => {
   const onSubmit = async (data: NoteForm) => {
     handleSubmit(data);
   };
+
+  console.log(form.getValues());
+
   return (
     <div className="bg-white p-6 rounded-lg shadow-md ">
-      <div
-        className="flex items-center space-x-2 cursor-pointer"
-        onClick={() => navigate(-1)}
-      >
-        <MoveLeft />
-        <span>Back</span>
-      </div>
-      <Editor content={""} onChange={(content)=> {
-
-        console.log(content)
-      }}/>
-      {/* <Form {...form}>
+      <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
+          <div className="flex justify-between items-center mb-4">
+            <div
+              className="flex items-center space-x-2 cursor-pointer"
+              onClick={() => navigate(-1)}
+            >
+              <MoveLeft />
+              <span>Back</span>
+            </div>
+            <Button variant="default" type="submit">
+              <Save />
+              Save
+            </Button>
+          </div>
           <FormField
             control={form.control}
-            name="categoryId"
+            name="title"
             render={({ field }) => (
-              <FormItem className="flex flex-col">
-                <FormLabel>Language</FormLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant="outline"
-                        role="combobox"
-                        className={cn(
-                          'w-[200px] justify-between',
-                          !field.value && 'text-muted-foreground'
-                        )}
-                      >
-                        {field.value
-                          ? languages.find(
-                              (language) => language.value === field.value
-                            )?.label
-                          : 'Select language'}
-                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-[200px] p-0">
-                    <Command>
-                      <CommandInput placeholder="Search language..." />
-                      <CommandList>
-                        <CommandEmpty>No language found.</CommandEmpty>
-                        <CommandGroup>
-                          {languages.map((language) => (
-                            <CommandItem
-                              value={language.label}
-                              key={language.value}
-                              onSelect={() => {
-                                form.setValue('categoryId', language.value);
-                              }}
-                            >
-                              <Check
-                                className={cn(
-                                  'mr-2 h-4 w-4',
-                                  language.value === field.value
-                                    ? 'opacity-100'
-                                    : 'opacity-0'
-                                )}
-                              />
-                              {language.label}
-                            </CommandItem>
-                          ))}
-                        </CommandGroup>
-                      </CommandList>
-                    </Command>
-                  </PopoverContent>
-                </Popover>
+              <FormItem className="mb-5">
+                <FormLabel>Username</FormLabel>
+                <FormControl>
+                  <Input placeholder="title" type="" {...field} />
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
+
+          <FormField
+            control={form.control}
+            name="body"
+            render={({ field }) => (
+              <>
+                <FormLabel>Notes</FormLabel>
+                <FormControl>
+                  <Editor
+                    name="body"
+                    content={field.value}
+                    onChange={(content) => {
+                      form.setValue('body', content);
+                    }}
+                  />
+                </FormControl>
+                <FormMessage />
+              </>
+            )}
+          />
         </form>
-      </Form> */}
+      </Form>
     </div>
   );
 };
