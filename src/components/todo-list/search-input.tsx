@@ -1,31 +1,37 @@
-import type React from 'react';
-
-import { Search } from 'lucide-react';
+import { useState } from 'react';
 import { Input } from '@/components/ui/input';
+import { Search } from 'lucide-react';
 
 interface SearchInputProps {
   placeholder?: string;
   value?: string;
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  className?: string;
+  onChange?: (value: string) => void;
 }
 
-export function SearchInput({
+export const SearchInput = ({
   placeholder = 'Search...',
-  value,
+  value = '',
   onChange,
-  className,
-}: SearchInputProps) {
+}: SearchInputProps) => {
+  const [internalValue, setInternalValue] = useState(value);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    setInternalValue(newValue);
+    if (onChange) {
+      onChange(newValue);
+    }
+  };
+
   return (
     <div className="relative">
-      <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
       <Input
-        type="search"
         placeholder={placeholder}
-        value={value}
-        onChange={onChange}
-        className={`pl-10 ${className}`}
+        value={onChange ? value : internalValue}
+        onChange={handleChange}
+        className="pl-10"
       />
     </div>
   );
-}
+};
