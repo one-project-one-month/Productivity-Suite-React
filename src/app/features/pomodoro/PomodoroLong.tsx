@@ -7,6 +7,7 @@ import Edit from './Edit';
 import type { ResetPomodoroPayload, ResumeRequestPayload, StartExistingPomodoroPayload, StartPomodoroPayload } from '@/types/pomodoro';
 import { connectWebSocket, disconnectWebSocket, resettPomodoro, resumePomodoro, startPomodoro, stopPomodoro } from '@/service/WebsocketService';
 import { usePomodoroStore } from '@/store/usePomodoroStore';
+import { toast } from 'sonner';
 
 type PomodoroWorkProps = {
   initialRemainingTime?: number;  // optional number
@@ -34,6 +35,7 @@ const PomodoroLong = () => {
               clearInterval(intervalRef.current!);
               setIsRunning(false)
               setRemainingTime(duration)
+              toast.success("Completed Work Session")
               return 0;
             }
             return prev - 1;
@@ -176,9 +178,9 @@ const PomodoroLong = () => {
             {isRunning ? <Pause /> : <Play />}
           </Button>
           <Edit timerType={3} onDuration={handleDurationChange} />
-          <Button  variant="outline">
+          {/* <Button  variant="outline">
             <Trash2/>
-          </Button>
+          </Button> */}
         </div>
         <h1 className='text-center text-gray-600'>Take a long break. Stretch, hydrate, and refresh.</h1>
       </div>

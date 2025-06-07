@@ -8,20 +8,20 @@ import { usePomodoroStore } from '@/store/usePomodoroStore';
 import { useEffect } from 'react';
 
 const Pomodoro = () => {
-    const {data} = usePomodoroQuery()
-    const setWorkDuration = usePomodoroStore(state => state.setWorkDuration)
-    const setShortBreakDuration = usePomodoroStore(state => state.setShortBreakDuration)
-    const setLongBreakDuration = usePomodoroStore(state => state.setLongBreakDuration)
+  //   const {data} = usePomodoroQuery()
+  //   const setWorkDuration = usePomodoroStore(state => state.setWorkDuration)
+  //   const setShortBreakDuration = usePomodoroStore(state => state.setShortBreakDuration)
+  //   const setLongBreakDuration = usePomodoroStore(state => state.setLongBreakDuration)
 
-     useEffect(() => {
-      console.log("Data : ",data)
-      if (data) {
-        const { timerType, durationSeconds } = data
-        if (timerType === 1) setWorkDuration(durationSeconds)
-        else if (timerType === 2) setShortBreakDuration(durationSeconds)
-        else if (timerType === 3) setLongBreakDuration(durationSeconds)
-      }
-  }, [data])
+  //    useEffect(() => {
+  //     console.log("Data : ",data)
+  //     if (data) {
+  //       const { timerType, durationSeconds } = data
+  //       if (timerType === 1) setWorkDuration(durationSeconds)
+  //       else if (timerType === 2) setShortBreakDuration(durationSeconds)
+  //       else if (timerType === 3) setLongBreakDuration(durationSeconds)
+  //     }
+  // }, [data])
   
     return (
     <div className="w-full overflow-x-hidden">

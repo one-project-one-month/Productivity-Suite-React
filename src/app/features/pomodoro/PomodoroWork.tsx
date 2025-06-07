@@ -17,6 +17,7 @@ import {
 import { connectWebSocket, disconnectWebSocket, resettPomodoro, resumePomodoro, startPomodoro, stopPomodoro } from '@/service/WebsocketService';
 import { Categories, type ResetPomodoroPayload, type ResumeRequestPayload, type StartExistingPomodoroPayload, type StartPomodoroPayload } from '@/types/pomodoro';
 import { usePomodoroStore } from '@/store/usePomodoroStore';
+import { toast } from 'sonner';
 
 export const categories = ["Work", "Study", "Personal", "Other"];
 
@@ -85,6 +86,7 @@ useEffect(() => {
       if (prev <= 1) {
         clearInterval(interval);
         usePomodoroStore.getState().handleCompletedSessions();  // Session is done
+        toast.success("Completed Work Session")
         setIsRunning(false); // stop timer
         return 0;
       }
@@ -245,9 +247,9 @@ useEffect(() => {
             }
           </Button>
           <Edit timerType={1} onDuration={handleDurationChange}/>
-          <Button  variant="outline">
+          {/* <Button  variant="outline">
             <Trash2/>
-          </Button>
+          </Button> */}
         </div>
 
         <div className="w-full mb-6">

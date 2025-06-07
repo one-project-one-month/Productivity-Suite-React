@@ -7,10 +7,8 @@ import Edit from './Edit';
 import type { ResetPomodoroPayload, ResumeRequestPayload, StartExistingPomodoroPayload, StartPomodoroPayload } from '@/types/pomodoro';
 import { connectWebSocket, disconnectWebSocket, resettPomodoro, resumePomodoro, startPomodoro, stopPomodoro } from '@/service/WebsocketService';
 import { usePomodoroStore } from '@/store/usePomodoroStore';
+import { toast } from 'sonner';
 
-type PomodoroWorkProps = {
-  initialRemainingTime?: number;  // optional number
-};
 const PomodoroShort = () => {
   const mode = usePomodoroStore((state) => state.mode)
   const isRunning = usePomodoroStore((state) => state.isRunning)
@@ -34,6 +32,7 @@ const PomodoroShort = () => {
             clearInterval(intervalRef.current!);
             setIsRunning(false)
             setRemainingTime(duration)
+            toast.success("Completed Work Session")
             return 0;
           }
           return prev - 1;
@@ -52,17 +51,22 @@ const PomodoroShort = () => {
     setRemainingTime( duration);
   }, [duration]);
 
+  if (!sequenceId) {
+  toast.error("Start a Work session first to initialize the Pomodoro cycle.");
+  return;
+}
+
   useEffect(()=> {
     const messageHandler = (message: any) => {
       console.log("Received raw WebSocket message:", message);
-      const { sequenceResponse, timerResponse } = message.data ?? {};
+      const { sequenceResponse } = message.data ?? {};
 
-      if (timerResponse?.id !== undefined) {
-        setTimerId(timerResponse.id);
-      }
-      if (sequenceResponse?.id !== undefined) {
-        setSequenceId(sequenceResponse.id);
-      }
+      // if (timerResponse?.id !== undefined) {
+      //   setTimerId(timerResponse.id);
+      // }
+      if (sequenceResponse?.id !== undefined && !sequenceId) {
+  setSequenceId(sequenceResponse.id);
+}
     }
     connectWebSocket(messageHandler)
     return () => {disconnectWebSocket()}
@@ -108,6 +112,11 @@ const PomodoroShort = () => {
   }
 
   const handleTimer = () => {
+    console.log("handleTimer called");
+  console.log("timerId:", timerId);
+  console.log("sequenceId:", sequenceId);
+  console.log("isRunning:", isRunning);
+  console.log("remainingTime:", remainingTime);
     if(timerId && sequenceId){
      if(isRunning) {
       handleStop()
@@ -177,9 +186,9 @@ const PomodoroShort = () => {
             {isRunning ? <Pause /> : <Play />}
           </Button>
           <Edit timerType = {2} onDuration={handleDurationChange} />
-          <Button  variant="outline">
+          {/* <Button  variant="outline">
             <Trash2/>
-          </Button>
+          </Button> */}
         </div>
         <h1 className='text-center text-gray-600'>Take a Short break and relax your mind.</h1>
       </div>

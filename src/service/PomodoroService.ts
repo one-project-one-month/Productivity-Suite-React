@@ -3,7 +3,6 @@ import { getPomodoroData } from "@/api/pomodoro/api";
 type PomodoroData = {
   durationSeconds: number;
   timerType: number;
-  id : number;
 };
 
 const parseDuration = (durationStr: string): number => {
@@ -22,7 +21,6 @@ export const fetchPomodoroSession = async (): Promise<PomodoroData> => {
   return {
     durationSeconds: parseDuration(timerResponse.duration),
     timerType: timerResponse.type,
-    id : sequenceResponse.id
   };
 };
 
