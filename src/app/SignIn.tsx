@@ -26,6 +26,7 @@ import { useMutation } from '@tanstack/react-query';
 import { signIn } from '@/api/auth';
 import { assignLoginToken } from '@/lib/auth';
 import { useAuthDataStore } from '@/store/useAuthStore';
+import { LoaderPinwheel } from 'lucide-react';
 
 const formSchema = z.object({
   email: z.string().email().trim().nonempty('Email required'),
@@ -46,28 +47,33 @@ const SignIn = () => {
     },
   });
 
-  const { mutateAsync } = useMutation({
+  const { mutateAsync, isPending } = useMutation({
     mutationFn: async (data: SignInType) =>
-      await signIn(data).then((response) => {
-        if (response.data.code === 200) {
-          assignLoginToken(
-            response.data.data.accessToken,
-            response.data.data.accessToken
-          );
-          setUser(response.data.data.currentUser);
-          toast.success('Success Login!');
-          navigate('/app/pomodoro-timer');
-          form.reset();
-          return response.data;
-        }
-      }).catch((e)=> {
-        if (e.response?.data?.code === 401) {
-          toast.error(e.response.data.message ?? "Invalid credentials, please try again.");
-        } else {
-          toast.error('Login failed, please try again.');
-        }
-        throw e;
-      }),
+      await signIn(data)
+        .then((response) => {
+          if (response.data.code === 200) {
+            assignLoginToken(
+              response.data.data.accessToken,
+              response.data.data.accessToken
+            );
+            setUser(response.data.data.currentUser);
+            toast.success('Success Login!');
+            navigate('/app/pomodoro-timer');
+            form.reset();
+            return response.data;
+          }
+        })
+        .catch((e) => {
+          if (e.response?.data?.code === 401) {
+            toast.error(
+              e.response.data.message ??
+                'Invalid credentials, please try again.'
+            );
+          } else {
+            toast.error('Login failed, please try again.');
+          }
+          throw e;
+        }),
   });
 
   const onSubmit = (values: SignInType) => {
@@ -131,7 +137,13 @@ const SignIn = () => {
                       type="submit"
                       className="w-full bg-indigo-500 hover:bg-indigo-600"
                     >
-                      Sign In
+                      {isPending ? (
+                        <span className="animate-spin">
+                          <LoaderPinwheel />
+                        </span>
+                      ) : (
+                        'Sign in'
+                      )}
                     </Button>
                   </div>
                   <div className="mt-4 text-center text-sm">

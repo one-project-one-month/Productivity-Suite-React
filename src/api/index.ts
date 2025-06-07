@@ -6,7 +6,6 @@ import Cookies from 'js-cookie';
 
 export const baseURL = import.meta.env.VITE_BACKEND_SERVER + '/api';
 
-
 const api = axios.create({
   baseURL: baseURL,
   headers: {
@@ -39,11 +38,12 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    const logoutZustand = useAuthDataStore((state) => state.logout);
+    const logoutZustand = useAuthDataStore.getState();
+    console.log(error.response?.status);
     if (error.response?.status === 401) {
       removeToken();
-      logoutZustand();
-      window.location.href = '/login';
+      logoutZustand.logout();
+      window.location.href = '/signin';
     }
     return Promise.reject(error);
   }
