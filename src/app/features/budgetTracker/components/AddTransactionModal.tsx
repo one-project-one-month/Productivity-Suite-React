@@ -7,31 +7,42 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import type { Dispatch, SetStateAction } from 'react';
+import { ChevronDownIcon } from 'lucide-react';
 
-interface Transaction {
-  id: string;
+interface Category {
+  id: number;
+  name: string;
   description: string;
-  category: string;
-  transaction_date: string;
-  amount: string;
 }
 
 interface AddTransactionModalProps {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
-  newTransaction: Omit<Transaction, 'id'>;
-  setNewTransaction: Dispatch<SetStateAction<Omit<Transaction, 'id'>>>;
+  newTransaction: {
+    id?: number;
+    description: string;
+    amount: number;
+    transactionDate: Date | string;
+    categoryId: number;
+  };
+  setNewTransaction: Dispatch<
+    SetStateAction<{
+      id?: number;
+      description: string;
+      amount: number;
+      transactionDate: Date | string;
+      categoryId: number;
+    }>
+  >;
   handleAddTransaction: () => void;
-  categories: string[];
+  handleEditTransaction?: () => void;
+  categories: Category[];
+  formErrors: {
+    description?: string;
+    amount?: string;
+    [key: string]: string | undefined;
+  };
 }
-
-const categoryColors: Record<string, string> = {
-  Housing: '#4682B4', // SteelBlue
-  Food: '#FF6347', // Tomato
-  Transportation: '#FFD700', // Gold
-  Entertainment: '#FF69B4', // HotPink
-  Utilities: '#32CD32', // LimeGreen
-};
 
 export function AddTransactionModal({
   isOpen,
@@ -39,15 +50,24 @@ export function AddTransactionModal({
   newTransaction,
   setNewTransaction,
   handleAddTransaction,
+  handleEditTransaction,
   categories,
+  formErrors
 }: AddTransactionModalProps) {
+  const selectedCategory = categories.find(
+    (cat) => cat.id === newTransaction.categoryId
+  );
+
+  const isEditMode = !!newTransaction.id;
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
-          <DialogTitle>Add New Transaction</DialogTitle>
+          <DialogTitle>{isEditMode ? 'Edit Transaction' : 'Add New Transaction'}</DialogTitle>
         </DialogHeader>
         <div className="grid gap-4 py-4">
+          {/* Description */}
           <div className="space-y-2">
             <label htmlFor="description" className="block text-sm font-medium">
               Description
@@ -65,24 +85,35 @@ export function AddTransactionModal({
               className="w-full p-2 border rounded"
               placeholder="Enter description"
             />
+            {formErrors.description && (
+              <p className="text-red-500 text-sm">{formErrors.description}</p>
+            )}
           </div>
 
+          {/* Amount */}
           <div className="space-y-2">
             <label htmlFor="amount" className="block text-sm font-medium">
-              Amount (MMK)
+              Amount
             </label>
             <input
               id="amount"
               type="number"
-              value={newTransaction.amount}
+              value={newTransaction.amount || ''}
               onChange={(e) =>
-                setNewTransaction({ ...newTransaction, amount: e.target.value })
+                setNewTransaction({
+                  ...newTransaction,
+                  amount: e.target.value ? Number(e.target.value) : 0,
+                })
               }
               className="w-full p-2 border rounded"
               placeholder="Enter amount"
             />
+            {formErrors.amount && (
+              <p className="text-red-500 text-sm">{formErrors.amount}</p>
+            )}
           </div>
 
+          {/* Transaction Date */}
           <div className="space-y-2">
             <label
               htmlFor="transaction_date"
@@ -92,76 +123,80 @@ export function AddTransactionModal({
             </label>
             <input
               type="date"
-              value={newTransaction.transaction_date}
+              value={
+                typeof newTransaction.transactionDate === 'string'
+                  ? newTransaction.transactionDate
+                  : newTransaction.transactionDate.toISOString().split('T')[0]
+              }
               onChange={(e) =>
                 setNewTransaction({
                   ...newTransaction,
-                  transaction_date: e.target.value,
+                  transactionDate: e.target.value,
                 })
               }
               className="w-full p-2 border rounded"
             />
+            {formErrors.transactionDate && (
+              <p className="text-red-500 text-sm">{formErrors.transactionDate}</p>
+            )}
           </div>
 
+          {/* Category Dropdown - Fixed */}
           <div className="space-y-2">
             <label className="block text-sm font-medium">Category</label>
             <Select.Root
-              value={newTransaction.category}
-              onValueChange={(value) =>
-                setNewTransaction({ ...newTransaction, category: value })
-              }
+              value={newTransaction.categoryId?.toString() || ''}
+              onValueChange={(value) => {
+                setNewTransaction({
+                  ...newTransaction,
+                  categoryId: parseInt(value),
+                });
+              }}
+              disabled={categories.length === 0}
             >
               <Select.Trigger className="flex items-center justify-between w-full p-2 border rounded-md bg-white">
                 <div className="flex items-center">
-                  <span
-                    className="w-3 h-3 rounded-full mr-2"
-                    style={{
-                      backgroundColor: categoryColors[newTransaction.category],
-                    }}
-                  ></span>
-                  <Select.Value />
+                  {selectedCategory && (
+                    <>
+                      <span
+                        className="w-3 h-3 rounded-full mr-2"
+                        style={{
+                          backgroundColor: selectedCategory.description,
+                        }}
+                      />
+                      <Select.Value placeholder="Select a category" />
+                    </>
+                  )}
                 </div>
                 <Select.Icon>
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                  >
-                    <path
-                      d="M6 9l6 6 6-6"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
+                  <ChevronDownIcon />
                 </Select.Icon>
               </Select.Trigger>
 
-              <Select.Content
-                className="z-50 w-96 bg-white border rounded-md shadow-lg"
-                position="popper"
-              >
+              <Select.Content className="z-50 bg-white border rounded-md shadow-lg">
                 <Select.Viewport>
                   {categories.map((cat) => (
                     <Select.Item
-                      key={cat}
-                      value={cat}
+                      key={cat.id}
+                      value={cat.id.toString()}
                       className="flex items-center p-2 cursor-pointer hover:bg-gray-50"
                     >
                       <span
                         className="w-3 h-3 rounded-full mr-2"
-                        style={{ backgroundColor: categoryColors[cat] }}
-                      ></span>
-                      <Select.ItemText>{cat}</Select.ItemText>
+                        style={{ backgroundColor: cat.description }}
+                      />
+                      <Select.ItemText>{cat.name}</Select.ItemText>
                     </Select.Item>
                   ))}
                 </Select.Viewport>
               </Select.Content>
             </Select.Root>
+            {formErrors.categoryId && (
+              <p className="text-red-500 text-sm">{formErrors.categoryId}</p>
+            )}
           </div>
         </div>
+
         <div className="flex justify-end space-x-2">
           <Button
             onClick={() => setIsOpen(false)}
@@ -170,10 +205,10 @@ export function AddTransactionModal({
             Cancel
           </Button>
           <Button
-            onClick={handleAddTransaction}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md"
+            onClick={isEditMode ? handleEditTransaction : handleAddTransaction}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md disabled:opacity-50"
           >
-            Add Transaction
+            {isEditMode ? 'Update' : 'Add'} Transaction
           </Button>
         </div>
       </DialogContent>

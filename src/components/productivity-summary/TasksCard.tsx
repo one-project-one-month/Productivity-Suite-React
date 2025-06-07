@@ -1,10 +1,19 @@
 import { Card, CardContent } from "../ui/card";
+import { useQuery } from "@tanstack/react-query";
 
     type TasksCardProps = {
         percentage : number
     }
 
 const TasksCard = ({percentage} : TasksCardProps) => {
+
+  // const { data } = useQuery({
+  //   queryKey: ['Tasks'],
+  //   queryFn: getSummaryPercentage,
+  // });
+  
+
+
     return (
       <Card className="w-full max-w-sm border-gray-200 border-0 shadow-xl">
         <CardContent>

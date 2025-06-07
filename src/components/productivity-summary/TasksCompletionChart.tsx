@@ -13,6 +13,10 @@ import {
     ChartLegend,
     ChartLegendContent,
 } from "@/components/ui/chart";
+
+import { useQuery } from "@tanstack/react-query";
+import { getSummaryPercentage } from "@/api/summary";
+
 const chartData = [
     { browser: "completed", tasks: 75, fill: "var(--color-completed)" },
     { browser: "active", tasks: 25, fill: "var(--color-active)" },
@@ -34,6 +38,12 @@ const ChartConfig = {
 } satisfies ChartConfig;
 
 export default function TaskCompletionChart() {
+
+  // const { data } = useQuery({
+  //   queryKey: ['budget'],
+  //   queryFn: getSummaryPercentage,
+  // });
+
     return (
       <Card className="flex flex-col w-full border-0 shadow-2xl">
         <CardHeader className="items-center ">

@@ -1,10 +1,18 @@
+import { getSummaryPercentage } from "@/api/summary";
 import { Card, CardContent } from "@/components/ui/card";
+import { useQuery } from "@tanstack/react-query";
 
     type BudgetCardProps = {
         percentage: number;
     };
 
 const BudgetCard = ( {percentage} : BudgetCardProps) => {
+
+  const {data} = useQuery({
+    queryKey : ["budget"],
+    queryFn : getSummaryPercentage
+  })
+  console.log(data)
 
     return (
       <Card className="w-full max-w-sm rounded-lg border-0 shadow-xl border-gray-200 ">
