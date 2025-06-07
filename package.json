@@ -29,6 +29,7 @@
     "@tailwindcss/vite": "^4.1.5",
     "@tanstack/react-query": "^5.75.5",
     "@tanstack/react-query-devtools": "^5.75.5",
+    "@tanstack/react-table": "^8.21.3",
     "@tiptap/extension-blockquote": "^2.12.0",
     "@tiptap/extension-bold": "^2.12.0",
     "@tiptap/extension-bullet-list": "^2.12.0",

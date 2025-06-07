@@ -1,4 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
+import { useQuery } from "@tanstack/react-query";
+import { getSummaryPercentage } from "@/api/summary";
+
 
 type FocusTimeCardProps = {
     hours: number;
@@ -6,6 +9,13 @@ type FocusTimeCardProps = {
 }
 
 const FocusTimeCard = ({ hours, minutes } : FocusTimeCardProps) => {
+
+  // const { data } = useQuery({
+  //   queryKey: ['focusTime'],
+  //   queryFn: getSummaryPercentage,
+  // });
+
+
     return (
       <Card className="w-full max-w-sm border-0 border-gray-200  shadow-xl">
         <CardContent>
