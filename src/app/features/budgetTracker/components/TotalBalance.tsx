@@ -9,12 +9,18 @@ import {
 
 interface Props {
   totalBudget: number;
-  onEdit: () => void;
+  safeTotalSpent: number;
+  currencyCode: string;
+  //onEdit: () => void;
 }
-
-const TotalBalance: React.FC<Props> = ({ totalBudget, onEdit }) => {
-  const totalBalance = 0;
-  const spent = 400;
+//onEdit
+const TotalBalance: React.FC<Props> = ({
+  totalBudget,
+  safeTotalSpent,
+  currencyCode,
+}) => {
+  //const totalBalance = 0;
+  const spent = safeTotalSpent;
   const remaining = totalBudget - spent;
   const progress = totalBudget > 0 ? (spent / totalBudget) * 100 : 0;
 
@@ -27,25 +33,27 @@ const TotalBalance: React.FC<Props> = ({ totalBudget, onEdit }) => {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-xl font-bold text-green-500">{totalBalance} MMK</p>
+          <p className="text-xl font-bold text-green-500">
+            {totalBudget - safeTotalSpent} {currencyCode}
+          </p>
         </CardContent>
       </Card>
 
       <Card className="col-span-1">
         <CardHeader>
           <CardTitle className="text-2xl font-semibold">
-            Monthly Budget
+            Total Monthly Budget
           </CardTitle>
           <div className="flex justify-between items-center w-full">
             <CardDescription>
-              Budget: {totalBudget.toLocaleString()} MMK
+              Budget: {totalBudget.toLocaleString()} {currencyCode}
             </CardDescription>
-            <button
+            {/* <button
               onClick={onEdit}
               className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
             >
               Edit
-            </button>
+            </button> */}
           </div>
         </CardHeader>
         <CardContent>
@@ -59,7 +67,7 @@ const TotalBalance: React.FC<Props> = ({ totalBudget, onEdit }) => {
 
             <div className="flex justify-between items-center">
               <p className="text-lg text-green-500">
-                {remaining.toLocaleString()} MMK remaining
+                {remaining.toLocaleString()} {currencyCode}remaining
               </p>
               <p className="text-sm text-gray-600">
                 {progress.toFixed(0)}% used
