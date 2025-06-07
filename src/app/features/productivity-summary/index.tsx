@@ -4,13 +4,14 @@ import FocusTimeCard from '@/components/productivity-summary/FocusTimeCard';
 import FocusTimeChart from '@/components/productivity-summary/FocusTimeChart';
 import TasksCard from '@/components/productivity-summary/TasksCard';
 import TaskCompletionChart from '@/components/productivity-summary/TasksCompletionChart';
+import ExpenseDetailChart from '@/components/productivity-summary/ExpenseDetailChart';
 
 const Summary = () => {
+
     return (
         <>
         <div className="container max-w-7xl mx-auto px-5 py-8">
-            <h2 className="text-2xl font-semibold my-6">Productivity Summary</h2>
-
+            
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <FocusTimeCard hours={1} minutes={50} />
             <BudgetCard percentage={40} />
@@ -21,9 +22,11 @@ const Summary = () => {
             <FocusTimeChart />
             <BudgetChart />
             </div>
-
             <div className="mt-10">
             <TaskCompletionChart />
+            </div> 
+            <div className='mt-10'>
+                <ExpenseDetailChart/>
             </div>
         </div>
         </>

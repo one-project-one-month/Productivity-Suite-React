@@ -1,5 +1,5 @@
 import { Pie, PieChart } from "recharts";
-
+import api from "@/api";
 import {
   Card,
   CardContent,
@@ -14,6 +14,10 @@ import {
   ChartLegend,
   ChartLegendContent
 } from "@/components/ui/chart";
+import { useQuery } from "@tanstack/react-query";
+import { getSummaryPercentage } from "@/api/summary";
+
+
 const chartData = [
   { browser: "spent", balance: 40, fill: "var(--color-spent)" },
   { browser: "remaining", balance: 60, fill: "var(--color-remaining)" },
@@ -35,6 +39,13 @@ const ChartConfig = {
 } satisfies ChartConfig;
 
 export default function BudgetChart() {
+
+    // const {data} = useQuery({
+    //   queryKey : ["budget"],
+    //   queryFn : getSummaryPercentage
+    // })
+
+  
     return (
       <Card className="flex flex-col w-full border-0 shadow-xl">
         <CardHeader className="items-center pb-0 mb-6">

@@ -67,6 +67,7 @@ export function AddTransactionModal({
           <DialogTitle>{isEditMode ? 'Edit Transaction' : 'Add New Transaction'}</DialogTitle>
         </DialogHeader>
         <div className="grid gap-4 py-4">
+          {/* Description */}
           <div className="space-y-2">
             <label htmlFor="description" className="block text-sm font-medium">
               Description
@@ -89,6 +90,7 @@ export function AddTransactionModal({
             )}
           </div>
 
+          {/* Amount */}
           <div className="space-y-2">
             <label htmlFor="amount" className="block text-sm font-medium">
               Amount
@@ -111,6 +113,7 @@ export function AddTransactionModal({
             )}
           </div>
 
+          {/* Transaction Date */}
           <div className="space-y-2">
             <label
               htmlFor="transaction_date"
@@ -138,6 +141,7 @@ export function AddTransactionModal({
             )}
           </div>
 
+          {/* Category Dropdown - Fixed */}
           <div className="space-y-2">
             <label className="block text-sm font-medium">Category</label>
             <Select.Root

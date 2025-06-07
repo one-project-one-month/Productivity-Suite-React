@@ -73,7 +73,7 @@ const TodoListContainer = () => {
   });
 
   const todoData: Todo[] = todos?.data || [];
-
+  console.log("to do ",todoData);
   // Initialize filters when data is loaded
   useEffect(() => {
     if (todoData.length > 0) {
