@@ -1,12 +1,15 @@
+import CallAction from './components/CallAction';
+
 import Hero from './components/Hero';
-import Nav from './components/Nav';
+import ToolsSection from './components/ToolsSection';
 
 const Main = () => {
   return (
-    <main className="container mx-auto p-12">
-      <Nav />
+    <>
       <Hero />
-    </main>
+      <ToolsSection />
+      <CallAction />
+    </>
   );
 };
 

@@ -13,6 +13,7 @@ dist-ssr
 *.local
 
 .env
+.idea
 
 # debug
 npm-debug.log*

@@ -1,11 +1,13 @@
 import { create } from 'zustand';
-import { createJSONStorage, persist } from 'zustand/middleware';
+import { persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 
 type User = {
   id: string;
-  username: string;
+  name: string;
   email: string;
+  genderId: number;
+  genderName: string;
 };
 
 type AuthState = {
@@ -18,9 +20,14 @@ export const useAuthDataStore = create<AuthState>()(
   persist(
     immer((set) => ({
       user: null,
-      setUser: (user) => set({ user }),
-      logout: () => set({ user: null }),
+      setUser: (user: User | null) => set({ user }),
+      logout: () => {
+        set({ user: null });
+        localStorage.removeItem('auth-storage');
+      },
     })),
-    { name: 'auth-storage', storage: createJSONStorage(() => sessionStorage) }
+    {
+      name: 'auth-storage',
+    }
   )
 );
