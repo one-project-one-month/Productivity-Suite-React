@@ -1,8 +1,6 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
-
 @custom-variant dark (&:is(.dark *));
-
 @theme inline {
     --radius-sm: calc(var(--radius) - 4px);
     --radius-md: calc(var(--radius) - 2px);
@@ -45,7 +43,6 @@
     --color-note-purple: oklch(67.37% 0.199 293.37);
     --color-note-lavender: oklch(93.29% 0.047 303.21);
     --color-note-deep: oklch(53.71% 0.186 300.36);
-
     --animate-fade-in: fade-in 0.3s ease-out;
     @keyframes fade-in {
         0% {
@@ -55,7 +52,6 @@
             opacity: 1;
         }
     }
-
     --animate-slide-in: slide-in 0.3s ease-out;
     @keyframes slide-in {
         0% {
@@ -142,61 +138,49 @@
     * {
         @apply border-border outline-ring/50;
     }
-
     body {
         @apply bg-background text-foreground;
     }
 }
 
 .tiptap {
-    :first-child {
+     :first-child {
         margin-top: 0;
     }
-
     ul {
         list-style: disc;
     }
-
     ol {
         list-style: decimal;
     }
-
     ul ul,
     ol ul {
         list-style: circle;
     }
-
     ol ol,
     ul ol {
         list-style: lower-alpha;
     }
-
     ul,
     ol {
         padding: 0 1rem;
         margin: 1.25rem 1rem 1.25rem 0.4rem;
-
         li p {
             margin-top: 0.25em;
             margin-bottom: 0.25em;
         }
     }
-
     /* Link styles */
-
     .text-editor-link {
         text-decoration: underline;
         color: rgb(0, 148, 254);
     }
-
     mark {
         background-color: #FAF594;
         border-radius: 0.4rem;
         box-decoration-break: clone;
         padding: 0.1rem 0.3rem;
     }
-
-
     h1,
     h2,
     h3,
@@ -207,48 +191,38 @@
         margin-top: 1rem;
         text-wrap: pretty;
     }
-
     h1 {
         font-size: 1.5rem;
     }
-
     h2 {
         font-size: 1.4rem;
     }
-
     h3 {
         font-size: 1.3rem;
     }
-
     h4 {
         font-size: 1.25rem;
     }
-
     h5 {
         font-size: 1.2rem;
     }
-
     h6 {
         font-size: 1.15rem;
     }
-
     blockquote {
         border-left: 3px solid #adb5bd;
         margin: 1.5rem 0;
         padding-left: 1rem;
     }
-
     hr {
         border: none;
         border-top: 1px solid #adb5bd;
         cursor: pointer;
         margin: 1rem 0;
-
         &.ProseMirror-selectednode {
             border-top: 1px solid #adb5bd;
         }
     }
-
     code {
         background-color: #adb5bd;
         border-radius: 0.4rem;
@@ -256,7 +230,6 @@
         font-size: 0.85rem;
         padding: 0.25em 0.3em;
     }
-
     pre {
         background: #000;
         border-radius: 0.5rem;
@@ -264,19 +237,16 @@
         font-family: 'JetBrainsMono', monospace;
         margin: 1.5rem 0;
         padding: 0.75rem 1rem;
-
         code {
             background: none;
             color: inherit;
             font-size: 0.8rem;
             padding: 0;
         }
-
         .hljs-comment,
         .hljs-quote {
             color: #616161;
         }
-
         .hljs-variable,
         .hljs-template-variable,
         .hljs-attribute,
@@ -288,7 +258,6 @@
         .hljs-selector-class {
             color: #f98181;
         }
-
         .hljs-number,
         .hljs-meta,
         .hljs-built_in,
@@ -298,33 +267,27 @@
         .hljs-params {
             color: #fbbc88;
         }
-
         .hljs-string,
         .hljs-symbol,
         .hljs-bullet {
             color: #b9f18d;
         }
-
         .hljs-title,
         .hljs-section {
             color: #faf594;
         }
-
         .hljs-keyword,
         .hljs-selector-tag {
             color: #70cff8;
         }
-
         .hljs-emphasis {
             font-style: italic;
         }
-
         .hljs-strong {
             font-weight: 700;
         }
     }
 }
-
 
 .tiptap p.is-editor-empty:first-child::before {
     color: #adb5bd;
@@ -332,4 +295,22 @@
     float: left;
     height: 0;
     pointer-events: none;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }

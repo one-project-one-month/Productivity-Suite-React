@@ -12,12 +12,10 @@ import { toast } from 'sonner';
 import {
   flexRender,
   getCoreRowModel,
-  getPaginationRowModel,
   useReactTable,
   type ColumnDef,
   type SortingState,
   getSortedRowModel,
-  type PaginationState,
 } from '@tanstack/react-table';
 import { Input } from '@/components/ui/input';
 import {
@@ -72,9 +70,6 @@ export function Transactions() {
 
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [pageCount, setPageCount] = useState(0);
-  const [totalTransactions, setTotalTransactions] = useState(0);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null);
   const [newTransaction, setNewTransaction] = useState<Omit<TransactionForm, 'transactionDate'> & { transactionDate: string; id?: number }>({
@@ -84,12 +79,7 @@ export function Transactions() {
     categoryId: 0,
   });
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
-
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 10,
-  });
 
   const descriptionFilter = searchParams.get('description') || (location.state?.filters?.description || '');
   const categoryFilter = searchParams.get('categoryId') ? parseInt(searchParams.get('categoryId') as string) : (location.state?.filters?.categoryId || '');
@@ -123,7 +113,6 @@ export function Transactions() {
       },
     };
 
-    setPagination({ pageIndex: 0, pageSize: 10 });
     navigate({
       pathname: location.pathname,
       search: urlParams.toString(),
@@ -137,7 +126,6 @@ export function Transactions() {
     setLocalToAmountFilter('');
     setSearchParams({});
     navigate(location.pathname, { state: null });
-    setPagination({ pageIndex: 0, pageSize: 10 });
   };
 
   useEffect(() => {
@@ -163,10 +151,7 @@ export function Transactions() {
 
   const fetchData = useCallback(async () => {
     try {
-      const params = new URLSearchParams({
-        page: (pageIndex + 1).toString(),
-        size: '10',
-      });
+      const params = new URLSearchParams();
 
       if (sorting.length > 0) {
         params.append('sort', sorting.map(s => `${s.id},${s.desc ? 'desc' : 'asc'}`).join(';'));
@@ -185,7 +170,6 @@ export function Transactions() {
       const txRes = await api.get(`${transactionRoutes.transaction}/search?${params.toString()}`);
       const responsePayload = txRes.data as PaginatedResponse<Transaction>;
       const transactionList = responsePayload?.data || responsePayload?.content || [];
-      const totalCount = responsePayload?.total || responsePayload?.totalElements || 0;
 
       const categoriesMap = new Map(categories.map(cat => [cat.id, cat]));
       const mergedTransactions = transactionList.map(tx => ({
@@ -195,21 +179,12 @@ export function Transactions() {
       }));
 
       setTransactions(mergedTransactions);
-      setTotalTransactions(totalCount);
-      setPageCount(Math.ceil(totalCount / 10));
     } catch (error) {
       console.error('Error fetching data:', error);
       toast.error('Failed to fetch transactions');
       setTransactions([]);
-      setTotalTransactions(0);
-      setPageCount(0);
     }
-  }, [
-    pageIndex,
-    sorting,
-    categories,
-    searchParams,
-  ]);
+  }, [sorting, categories, searchParams]);
 
   useEffect(() => {
     if (categories.length > 0) {
@@ -387,13 +362,10 @@ export function Transactions() {
   const table = useReactTable({
     data: transactions,
     columns,
-    pageCount,
-    state: { sorting, pagination: { pageIndex, pageSize: 10 } },
-    onPaginationChange: setPagination,
+    state: { sorting },
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    manualPagination: true,
     manualSorting: true,
     manualFiltering: true,
   });
@@ -493,72 +465,39 @@ export function Transactions() {
                 </div>
 
                 <div className="rounded-md border">
-                  <Table>
-                    <TableHeader>{table.getHeaderGroups().map(hg => <TableRow key={hg.id}>{hg.headers.map(h => <TableHead key={h.id}>{flexRender(h.column.columnDef.header, h.getContext())}</TableHead>)}</TableRow>)}</TableHeader>
-                    <TableBody>
-                      {table.getRowModel().rows?.length ? (
-                        <>
-                          {table.getRowModel().rows.map(row => (
+                  <div className={`relative ${transactions.length > 10 ? 'overflow-y-auto max-h-[500px]' : ''}`}>
+                    <Table className="w-full">
+                      <TableHeader className="sticky top-0 bg-background z-10">
+                        {table.getHeaderGroups().map(hg => (
+                          <TableRow key={hg.id}>
+                            {hg.headers.map(h => (
+                              <TableHead key={h.id} className="bg-white">
+                                {flexRender(h.column.columnDef.header, h.getContext())}
+                              </TableHead>
+                            ))}
+                          </TableRow>
+                        ))}
+                      </TableHeader>
+                      <TableBody>
+                        {table.getRowModel().rows?.length ? (
+                          table.getRowModel().rows.map(row => (
                             <TableRow key={row.id}>
                               {row.getVisibleCells().map(cell => (
-                                <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+                                <TableCell key={cell.id}>
+                                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                </TableCell>
                               ))}
                             </TableRow>
-                          ))}
-                          {Array.from({ length: 10 - table.getRowModel().rows.length }).map((_, i) => (
-                            <TableRow key={`empty-${i}`} className="h-[53px]">
-                              <TableCell colSpan={columns.length} />
-                            </TableRow>
-                          ))}
-                        </>
-                      ) : (
-                        <TableRow>
-                          <TableCell colSpan={columns.length} className="h-24 text-center">
-                            No results found.
-                          </TableCell>
-                        </TableRow>
-                      )}
-                    </TableBody>
-                  </Table>
-                </div>
-
-                <div className="flex items-center justify-end space-x-2 py-4">
-                  <div className="flex-1 text-sm text-muted-foreground">
-                    Showing {table.getRowModel().rows.length} of {totalTransactions} transactions (Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()})
-                  </div>
-                  <div className="space-x-2">
-                    <Button
-                      variant="outline"
-                      size="2"
-                      onClick={() => table.setPageIndex(0)}
-                      disabled={!table.getCanPreviousPage()}
-                    >
-                      First
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="2"
-                      onClick={() => table.previousPage()}
-                      disabled={!table.getCanPreviousPage()}
-                    >
-                      Previous
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="2"
-                      onClick={() => table.nextPage()}
-                      disabled={!table.getCanNextPage()}
-                    >
-                      Next
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="2"
-                      onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-                      disabled={!table.getCanNextPage()}
-                    >
-                      Last
-                    </Button>
+                          ))
+                        ) : (
+                          <TableRow>
+                            <TableCell colSpan={columns.length} className="h-24 text-center">
+                              No results found.
+                            </TableCell>
+                          </TableRow>
+                        )}
+                      </TableBody>
+                    </Table>
                   </div>
                 </div>
               </CardContent>
