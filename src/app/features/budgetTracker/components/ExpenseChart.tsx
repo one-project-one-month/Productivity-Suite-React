@@ -2,18 +2,11 @@
 import { Pie, PieChart, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-const categoryColors: Record<string, string> = {
-  Housing: '#4682B4',
-  Food: '#FF6347',
-  Transportation: '#FFD700',
-  Entertainment: '#FF69B4',
-  Utilities: '#32CD32'
-};
-
 interface ExpensePieChartProps {
   transactions: {
     category: string;
     amount: string;
+    color: string;
   }[];
 }
 
@@ -21,14 +14,17 @@ export function ExpensePieChart({ transactions }: ExpensePieChartProps) {
   // Process transactions data for the chart
   const categoryTotals = transactions.reduce((acc, tx) => {
     const amount = parseFloat(tx.amount) || 0;
-    acc[tx.category] = (acc[tx.category] || 0) + amount;
+    acc[tx.category] = {
+      amount: (acc[tx.category]?.amount || 0) + amount,
+      color: tx.color // Store the color from the transaction
+    };
     return acc;
-  }, {} as Record<string, number>);
+  }, {} as Record<string, { amount: number; color: string }>);
 
-  const chartData = Object.entries(categoryTotals).map(([category, amount]) => ({
+  const chartData = Object.entries(categoryTotals).map(([category, data]) => ({
     category,
-    amount,
-    fill: categoryColors[category] || '#999999' // default color
+    amount: data.amount,
+    fill: data.color // Use the color from the transaction data
   }));
 
   const total = chartData.reduce((sum, item) => sum + item.amount, 0);

@@ -9,10 +9,17 @@ import {
 import type { Dispatch, SetStateAction } from 'react';
 import { ChevronDownIcon } from 'lucide-react';
 
+interface Category {
+  id: number;
+  name: string;
+  description: string;
+}
+
 interface AddTransactionModalProps {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   newTransaction: {
+    id?: number;
     description: string;
     amount: number;
     transactionDate: Date | string;
@@ -20,6 +27,7 @@ interface AddTransactionModalProps {
   };
   setNewTransaction: Dispatch<
     SetStateAction<{
+      id?: number;
       description: string;
       amount: number;
       transactionDate: Date | string;
@@ -27,6 +35,7 @@ interface AddTransactionModalProps {
     }>
   >;
   handleAddTransaction: () => void;
+  handleEditTransaction?: () => void;
   categories: Category[];
   formErrors: {
     description?: string;
@@ -41,21 +50,23 @@ export function AddTransactionModal({
   newTransaction,
   setNewTransaction,
   handleAddTransaction,
+  handleEditTransaction,
   categories,
-  formErrors 
+  formErrors
 }: AddTransactionModalProps) {
   const selectedCategory = categories.find(
     (cat) => cat.id === newTransaction.categoryId
   );
 
+  const isEditMode = !!newTransaction.id;
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
-          <DialogTitle>Add New Transaction</DialogTitle>
+          <DialogTitle>{isEditMode ? 'Edit Transaction' : 'Add New Transaction'}</DialogTitle>
         </DialogHeader>
         <div className="grid gap-4 py-4">
-          {/* Description */}
           <div className="space-y-2">
             <label htmlFor="description" className="block text-sm font-medium">
               Description
@@ -78,7 +89,6 @@ export function AddTransactionModal({
             )}
           </div>
 
-          {/* Amount */}
           <div className="space-y-2">
             <label htmlFor="amount" className="block text-sm font-medium">
               Amount
@@ -101,7 +111,6 @@ export function AddTransactionModal({
             )}
           </div>
 
-          {/* Transaction Date */}
           <div className="space-y-2">
             <label
               htmlFor="transaction_date"
@@ -129,7 +138,6 @@ export function AddTransactionModal({
             )}
           </div>
 
-          {/* Category Dropdown - Fixed */}
           <div className="space-y-2">
             <label className="block text-sm font-medium">Category</label>
             <Select.Root
@@ -193,10 +201,10 @@ export function AddTransactionModal({
             Cancel
           </Button>
           <Button
-            onClick={handleAddTransaction}
+            onClick={isEditMode ? handleEditTransaction : handleAddTransaction}
             className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md disabled:opacity-50"
           >
-            Add Transaction
+            {isEditMode ? 'Update' : 'Add'} Transaction
           </Button>
         </div>
       </DialogContent>
