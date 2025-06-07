@@ -1,10 +1,29 @@
+
+import { usePomodoroQuery } from '@/hooks/usePomodoroQuery';
 import PomodoroLong from './PomodoroLong';
 import PomodoroShort from './PomodoroShort';
 import PomodoroWork from './PomodoroWork';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { usePomodoroStore } from '@/store/usePomodoroStore';
+import { useEffect } from 'react';
 
 const Pomodoro = () => {
-  return (
+    const {data} = usePomodoroQuery()
+    const setWorkDuration = usePomodoroStore(state => state.setWorkDuration)
+    const setShortBreakDuration = usePomodoroStore(state => state.setShortBreakDuration)
+    const setLongBreakDuration = usePomodoroStore(state => state.setLongBreakDuration)
+
+     useEffect(() => {
+      console.log("Data : ",data)
+      if (data) {
+        const { timerType, durationSeconds } = data
+        if (timerType === 1) setWorkDuration(durationSeconds)
+        else if (timerType === 2) setShortBreakDuration(durationSeconds)
+        else if (timerType === 3) setLongBreakDuration(durationSeconds)
+      }
+  }, [data])
+  
+    return (
     <div className="w-full overflow-x-hidden">
       <Tabs defaultValue="pomodoro" className="w-full">
         <div className="flex justify-center w-full">
@@ -31,7 +50,7 @@ const Pomodoro = () => {
         </div>
 
         <TabsContent value="pomodoro">
-          <PomodoroWork />
+          <PomodoroWork  />
         </TabsContent>
         <TabsContent value="short">
           <PomodoroShort />
